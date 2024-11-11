@@ -21,9 +21,12 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
      */
     _generateFreeCallStateServiceClient() {
         const serviceEndpoint = this._serviceClient._getServiceEndpoint();
-        console.log('serviceEndpoint: ', serviceEndpoint);
+        let host = serviceEndpoint.protocol + '//' + serviceEndpoint.hostname;
+        if (serviceEndpoint.hasOwnProperty('port')) {
+            host = host + ':' + serviceEndpoint.port;
+        }
 
-        return new FreeCallStateServiceClient(serviceEndpoint.href);
+        return new FreeCallStateServiceClient(host);
     }
 
     _generateFreeCallStateMethodDescriptor() {
