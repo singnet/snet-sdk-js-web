@@ -4,17 +4,11 @@ import { PrepaidMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
 class PrepaidPaymentStrategyWeb extends PrepaidPaymentStrategy {
     /**
      * @param {BaseServiceClient} serviceClient
-     * @param {ConcurrencyManager} concurrencyManager
      * @param {number} blockOffset
      * @param {number} callAllowance
      */
-    constructor(
-        serviceClient,
-        concurrencyManager,
-        blockOffset = 240,
-        callAllowance = 1
-    ) {
-        super(serviceClient, concurrencyManager, blockOffset, callAllowance);
+    constructor(serviceClient, blockOffset = 240, callAllowance = 1) {
+        super(serviceClient, blockOffset, callAllowance);
         this.metadataGenerator = new PrepaidMetadataGenerator();
     }
 
