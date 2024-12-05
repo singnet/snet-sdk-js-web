@@ -2,6 +2,8 @@ import SnetSDK, { WalletRPCIdentity } from 'snet-sdk-core';
 import WebServiceClient from './WebServiceClient';
 import RegistryContract from './RegistryContract';
 import { DefaultPaymentStrategy } from './payment_strategies';
+import ServiceMetadataProviderWeb from './ServiceMetadataProvider';
+import { isEmpty } from 'lodash';
 
 class WebSdk extends SnetSDK {
     constructor(...args) {
@@ -21,10 +23,24 @@ class WebSdk extends SnetSDK {
      * @returns {Promise<WebServiceClient>}
      */
     async createServiceClient(
+        metadataProvider,
+        paymentChannelManagementStrategy
+    ) {
+        if (isEmpty(metadataProvider) || typeof metadataProvider === 'string') {
+            return new Error('metadata provider is empty');
+        }
+        let paymentStrategy = paymentChannelManagementStrategy;
+        if (isEmpty(paymentStrategy)) {
+            paymentStrategy = this._constructStrategy();
+        }
+
+        return new WebServiceClient(metadataProvider, paymentStrategy);
+    }
+
+    async createServiceMetadataProvider(
         orgId,
         serviceId,
         groupName = null,
-        paymentChannelManagementStrategy = null,
         options = {}
     ) {
         console.log('createServiceClient web options: ', options);
@@ -40,18 +56,13 @@ class WebSdk extends SnetSDK {
             groupName
         );
 
-        const paymentStartegy = this._constructStrategy(
-            paymentChannelManagementStrategy
-        );
-
-        return new WebServiceClient(
-            this,
+        return new ServiceMetadataProviderWeb(
+            this.account,
             orgId,
             serviceId,
-            this._mpeContract,
             serviceMetadata,
+            this._mpeContract,
             group,
-            paymentStartegy,
             options
         );
     }
@@ -61,19 +72,20 @@ class WebSdk extends SnetSDK {
     }
 
     async setupAccount() {
+        // TODO check for what this func
         await this._account._identity.setupAccount();
     }
 
-    _constructStrategy(paymentChannelManagementStrategy, concurrentCalls = 1) {
-        console.log("_constructStrategy WEB");
-        
+    _constructStrategy(concurrentCalls = 1) {
+        console.log('_constructStrategy WEB');
+
         // const coreStartegy = super._constructStrategy(
         //     paymentChannelManagementStrategy,
         //     concurrentCalls
         // );
         // console.log("coreStartegy: ", coreStartegy);
 
-        return new DefaultPaymentStrategy(concurrentCalls);
+        return new DefaultPaymentStrategy(this._account, concurrentCalls);
     }
 }
 

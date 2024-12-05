@@ -6,9 +6,10 @@ import {
 } from './proto/token_service_pb_service';
 
 class ConcurrencyManager {
-    constructor(concurrentCalls = 1, serviceClient) {
+    constructor(account, serviceMetadata, concurrentCalls = 1) {
+        this._account = account;
         this._concurrentCalls = concurrentCalls;
-        this._serviceClient = serviceClient;
+        this._serviceMetadata = serviceMetadata;
         this._tokenServiceClient = this._generateTokenServiceClient();
     }
 
@@ -31,7 +32,7 @@ class ConcurrencyManager {
     }
 
     /**
-     * @param {ServiceClient} serviceClient
+     * @param {ServiceClient} serviceMetadata
      * @param {PaymentChannel} channel
      * @param {number} amount
      * @returns {Promise<string | undefined>} token
@@ -45,8 +46,7 @@ class ConcurrencyManager {
 
     async _getTokenServiceRequest(channel, amount) {
         const { nonce } = channel.state;
-        const currentBlockNumber =
-            await this._serviceClient.getCurrentBlockNumber();
+        const currentBlockNumber = await this._account.getCurrentBlockNumber();
 
         const mpeSignature = await this._generateMpeSignature(
             parseInt(channel.channelId, 10),
@@ -70,7 +70,6 @@ class ConcurrencyManager {
 
     /**
      * Get token for the given amount
-     * @param {ServiceClient} serviceClient
      * @param {PaymentChannel} channel
      * @param {number} amount
      * @returns {Promise<string>} token
@@ -99,16 +98,16 @@ class ConcurrencyManager {
 
     async _generateTokenSignature(mpeSignature, currentBlockNumber) {
         const mpeSignatureHex = mpeSignature.toString('hex');
-        return this._serviceClient.signData(
+        return this._account.signData(
             { t: 'bytes', v: mpeSignatureHex },
             { t: 'uint256', v: currentBlockNumber }
         );
     }
 
     async _generateMpeSignature(channelId, nonce, signedAmount) {
-        return this._serviceClient.signData(
+        return this._account.signData(
             { t: 'string', v: '__MPE_claim_message' },
-            { t: 'address', v: this._serviceClient.mpeContract.address },
+            { t: 'address', v: this._serviceMetadata.mpeContract.address },
             { t: 'uint256', v: channelId },
             { t: 'uint256', v: nonce },
             { t: 'uint256', v: signedAmount }
@@ -117,7 +116,7 @@ class ConcurrencyManager {
 
     _generateTokenServiceClient() {
         debug('Creating TokenService client', { tags: ['gRPC'] });
-        const serviceEndpoint = this._serviceClient._getServiceEndpoint();
+        const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();
         debug(`TokenService pointing to ${serviceEndpoint.host}, `, {
             tags: ['gRPC'],
         });
