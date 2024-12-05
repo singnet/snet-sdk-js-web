@@ -8,8 +8,10 @@ class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
      * Initializing the payment strategy
      * @param {number} concurrentCalls
      */
-    constructor() {
-        super();
+    constructor(account, concurrentCalls) {
+        super(account, concurrentCalls);
+        this._account = account;
+        this._concurrentCalls = concurrentCalls;
     }
 
     /**
@@ -17,9 +19,10 @@ class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
      * @param {BaseServiceClient} serviceClient
      * @returns {Promise<({'snet-payment-type': string}|{'snet-payment-channel-id': string}|{'snet-payment-channel-nonce': string}|{'snet-payment-channel-amount': string}|{'snet-payment-channel-signature-bin': string.base64})[]>}
      */
-    async getPaymentMetadata(serviceClient) {
+    async getPaymentMetadata(serviceMetadata) {
         const freeCallPaymentStrategy = new FreeCallPaymentStrategyWeb(
-            serviceClient
+            this._account,
+            serviceMetadata
         );
         const isFreeCallsAvailable =
             await freeCallPaymentStrategy.isFreeCallAvailable();
@@ -27,14 +30,20 @@ class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
 
         if (isFreeCallsAvailable) {
             paymentStrategy = freeCallPaymentStrategy;
-        } else if (serviceClient.concurrencyFlag) {
-            paymentStrategy = new PrepaidPaymentStrategy(serviceClient);
+        } else if (serviceMetadata.concurrencyFlag) {
+            paymentStrategy = new PrepaidPaymentStrategy(
+                this._account,
+                serviceMetadata
+            );
         } else {
-            paymentStrategy = new PaidCallPaymentStrategy(serviceClient);
+            paymentStrategy = new PaidCallPaymentStrategy(
+                this._account,
+                serviceMetadata
+            );
         }
-        const metadata = await paymentStrategy.getPaymentMetadata();
-        console.log('DefaultPaymentStrategy Web metadata: ', metadata);
-
+        const metadata = await paymentStrategy.getPaymentMetadata(
+            serviceMetadata
+        );
         return metadata;
     }
 }

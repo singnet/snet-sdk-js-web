@@ -15,9 +15,9 @@ class PaidCallPaymentStrategyWeb extends PaidCallPaymentStrategy {
     /**
      * @returns {Promise<[{'snet-payment-type': string}, {'snet-payment-channel-id': string}, {'snet-payment-channel-nonce': string}, {'snet-payment-channel-amount': string}, {'snet-payment-channel-signature-bin': Buffer}]>}
      */
-    async getPaymentMetadata() {
-        const metadataFields = await super.getPaymentMetadata();
-        return this.metadataGeneratorgenerateMetadata(metadataFields);
+    async getPaymentMetadata(serviceMetadata) {
+        const metadataFields = await super.getPaymentMetadata(serviceMetadata);
+        return this.metadataGenerator(metadataFields);
     }
 }
 

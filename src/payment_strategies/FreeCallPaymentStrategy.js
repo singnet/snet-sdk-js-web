@@ -5,9 +5,9 @@ import {
 import FreeCallPaymentStrategy from 'snet-sdk-core/payment_strategies/FreeCallPaymentStrategy';
 
 class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
-    constructor(serviceClient) {
-        super(serviceClient);
-        this._serviceClient = serviceClient;
+    constructor(account, serviceMetadata) {
+        super(account, serviceMetadata);
+        this._serviceMetadata = serviceMetadata;
         this._freeCallStateServiceClient =
             this._generateFreeCallStateServiceClient();
         this._freeCallStateMethodDescriptor =
@@ -20,7 +20,7 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
      * @private
      */
     _generateFreeCallStateServiceClient() {
-        const serviceEndpoint = this._serviceClient._getServiceEndpoint();
+        const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();
         let host = serviceEndpoint.protocol + '//' + serviceEndpoint.hostname;
         if (serviceEndpoint.hasOwnProperty('port')) {
             host = host + ':' + serviceEndpoint.port;
