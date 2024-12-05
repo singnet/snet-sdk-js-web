@@ -28,10 +28,10 @@ const ServiceDemo = ({serviceClient}) => {
     const onActionEnd = (response) => {
         const { message, status, statusMessage } = response;
         setIsSubmitCompleted(true);
-  
         if (status !== SUCCESS_CODE) {
             setError(statusMessage);
         }
+
         setResponse(message.getValue());
         setIsLoading(false);
     }
@@ -87,8 +87,8 @@ const ServiceDemo = ({serviceClient}) => {
                 Submit
             </button>
             <Error errorMessage={error} />
-            <Loader isLoading={isLoading} />
-            {isSubmitCompleted && <div className="service-output">
+            <Loader isLoading={isLoading && !error} />
+            {isSubmitCompleted && !error && <div className="service-output">
                 Response: {values.firstValue} {selectedAction.title} {values.secondValue} = {response}
             </div>
             }

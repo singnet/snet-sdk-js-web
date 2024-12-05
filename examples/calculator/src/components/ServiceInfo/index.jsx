@@ -2,12 +2,12 @@ import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
 import Loader from "../Loader/index.jsx";
 import "./styles.css";
 
-const ServiceInfo = ({serviceClient}) => {
-    if (!serviceClient) {
+const ServiceInfo = ({serviceMetadata}) => {
+    if (!serviceMetadata) {
         return <div className="loader"><Loader isLoading={true} /></div>
     }
-    const metadata = serviceClient.metadata;
-    const group = serviceClient.group;
+    const metadata = serviceMetadata.metadata;
+    const group = serviceMetadata.group;
 
     const generatePriceInfoMeta = (priceInfo) => {
         return [

@@ -1,3 +1,8 @@
+.wallet-info-button-group{
+    display: flex;
+    gap: 20px;
+}
+
 .wallet-info-table td {
     word-break: break-word;
 }

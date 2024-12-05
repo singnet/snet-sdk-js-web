@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { getWalletInfo } from "../../helperFunctions/sdkCallFunctions";
+import { getWalletInfo, getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions";
 import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
 import "./styles.css";
 import Loader from "../Loader/index.jsx";
 
-const WalletInfo = () => {
+const WalletInfo = ({serviceMetadata}) => {
     const [address, setAddress] = useState('');
     const [balance, setBalance] = useState('');
     const [transactionCount, setTransactionCount] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [availableFreeCalls, setAvailibleFreeCalls] = useState("");
 
     const getWalletInfoFromSDK = async () => {
         setIsLoading(true);
@@ -25,9 +26,16 @@ const WalletInfo = () => {
         { title: "transactions", value: transactionCount },
     ]
 
+    const getAvailableFreeCallsFromSDK = async () => {
+        setAvailibleFreeCalls(await getAvailableFreeCalls(serviceMetadata));
+    }
+
     return (
         <div className="wallet-info">
-            <button onClick={getWalletInfoFromSDK}>Get wallet info</button>
+            <div className="wallet-info-button-group">
+                <button onClick={getWalletInfoFromSDK}>Get wallet info</button>
+                <button disabled={!serviceMetadata} onClick={getAvailableFreeCallsFromSDK}>Get freecalls available</button>
+            </div>
             <Loader isLoading={isLoading} />
             {address && balance &&
             <table className="wallet-info-table">
@@ -39,6 +47,7 @@ const WalletInfo = () => {
                     </tr>)}
                 </tbody>
             </table>}
+            <p>Available free-calls: <b>{availableFreeCalls}</b></p>
         </div>
 )}
 

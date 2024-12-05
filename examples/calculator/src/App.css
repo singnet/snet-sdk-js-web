@@ -50,3 +50,8 @@ td, th {
   gap: 5%;
   align-items: start;
 }
+
+.loadServiceButtons {
+  display: flex;
+  gap: 20px
+}

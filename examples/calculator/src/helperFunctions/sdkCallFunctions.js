@@ -1,9 +1,9 @@
 import serviceConfig from '../configs/serviceConfig';
 import { initSDK } from '../configs/sdkConfig';
-import PrepaidPaymentStrategy from 'snet-sdk-web/payment_strategies/PrepaidPaymentStrategy';
-import PaidCallPaymentStrategy from 'snet-sdk-web/payment_strategies/PaidCallPaymentStrategy';
-import { DefaultPaymentStrategy } from 'snet-sdk-web/payment_strategies';
-import { FreecallMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
+import {
+    PrepaidPaymentStrategy,
+    FreeCallPaymentStrategy,
+} from 'snet-sdk-web/payment_strategies';
 
 let sdk;
 
@@ -11,49 +11,73 @@ const getSDK = async () => {
     return sdk ? sdk : await initSDK();
 };
 
-const frecallMEtadataGenerator = () => {
-    const metadaValues = {
-        type: 'free-call',
-        userId: 'fospipakno@gufum.com',
-        currentBlockNumber: '',   
-        freecallAuthToken: '91194d6b7ebd593836b06fdd19325eed074ae9cabefde29b6593596d924655704fdf13f127ac6f43aa60b438a9d3e4c21fbdf66e709e5f84a3987fd351a877601b',
-        freecallTokenExpiryBlock: 7208319,
-        signatureBytes: '',
-    }
-    // const frecallMEtadataGenerator = new FreecallMetadataGenerator();
-    // "snet-payment-type": data["snet-payment-type"],
-    // "snet-free-call-user-id": data["snet-free-call-user-id"],
-    // "snet-current-block-number": `${data["snet-current-block-number"]}`,
-    // "snet-payment-channel-signature-bin": parseSignature(data["snet-payment-channel-signature-bin"]),
-    // "snet-free-call-auth-token-bin": parseSignature(data["snet-free-call-auth-token-bin"]),
-    // "snet-free-call-token-expiry-block": `${data["snet-free-call-token-expiry-block"]}`,
-    // "snet-payment-mpe-address"
-}
-
-const generateOptions = () => {
+export const generateOptions = () => {
     return {
         disableBlockchainOperations: false,
-        tokenExpirationBlock: 7208319,
+        tokenExpirationBlock: 7388515,
         tokenToMakeFreeCall:
-            '91194d6b7ebd593836b06fdd19325eed074ae9cabefde29b6593596d924655704fdf13f127ac6f43aa60b438a9d3e4c21fbdf66e709e5f84a3987fd351a877601b',
+            '17b77edf22bc5bceae5562f5fb26fea0ccbf7c22c99a56287c14cc90cbe17f633f7338712e6a9dbf1e44dad2fd8c710613354904df688fa4d3a90a54db2afc9e1b',
         email: 'fospipakno@gufum.com',
         concurrency: true,
     };
 };
 
-export const getServiceClient = async () => {
+export const getServiceMetadata = async (options) => {
     const sdk = await getSDK();
-    const options = generateOptions();
-    const client = await sdk.createServiceClient(
+    // const options = generateOptions();
+    const serviceMetadata = await sdk.createServiceMetadataProvider(
         serviceConfig.orgID,
         serviceConfig.serviceID,
         'default_group',
-        null, // paymentStrategy
         options
     );
-    console.log('client: ', client);
+    return serviceMetadata;
+};
 
+const getServiceClient = async (serviceMetadataProvider, paymentStrategy) => {
+    const sdk = await getSDK();
+    const client = await sdk.createServiceClient(
+        serviceMetadataProvider,
+        paymentStrategy
+    );
     return client;
+};
+
+export const getPaymentServiceClient = async (serviceMetadata) => {
+    const sdk = await getSDK();
+    const paymentStrategy = new PrepaidPaymentStrategy(
+        sdk.account,
+        serviceMetadata
+    );
+    const paymentServiceClient = await getServiceClient(
+        serviceMetadata,
+        paymentStrategy
+    );
+    return paymentServiceClient;
+};
+
+const createFreecallStrategy = async (serviceMetadata) => {
+    const sdk = await getSDK();
+    const paymentStrategy = new FreeCallPaymentStrategy(
+        sdk.account,
+        serviceMetadata
+    );
+
+    return paymentStrategy;
+};
+
+export const getFreeCallServiceClient = async (serviceMetadata) => {
+    const paymentStrategy = await createFreecallStrategy(serviceMetadata);
+    const freeCallServiceClient = await getServiceClient(
+        serviceMetadata,
+        paymentStrategy
+    );
+    return freeCallServiceClient;
+};
+
+export const getDefaultServiceClient = async (serviceMetadata) => {
+    const defaultServiceClient = await getServiceClient(serviceMetadata);
+    return defaultServiceClient;
 };
 
 export const getWalletInfo = async () => {
@@ -62,4 +86,10 @@ export const getWalletInfo = async () => {
     const balance = await sdk.account.balance();
     const transactionCount = Number(await sdk.account._transactionCount());
     return { address, balance, transactionCount };
+};
+
+export const getAvailableFreeCalls = async (serviceMetadata) => {
+    const freecallStrategy = await createFreecallStrategy(serviceMetadata);
+    const availableFreeCalls = await freecallStrategy.getFreeCallsAvailable();
+    return availableFreeCalls;
 };
