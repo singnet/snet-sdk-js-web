@@ -1,10 +1,11 @@
-import SnetSDK, { WalletRPCIdentity } from 'snet-sdk-core';
+import SnetSDK from 'snet-sdk-core';
 import WebServiceClient from './WebServiceClient';
 import RegistryContract from './RegistryContract';
 import { DefaultPaymentStrategy } from './payment_strategies';
 import ServiceMetadataProviderWeb from './ServiceMetadataProvider';
 import { isEmpty } from 'lodash';
 import TrainingProviderWeb from './training/TrainingProvider';
+import { WalletRPCIdentity } from './identities';
 
 class WebSdk extends SnetSDK {
     constructor(...args) {
@@ -66,6 +67,10 @@ class WebSdk extends SnetSDK {
         );
     }
 
+    createTrainingProvider(serviceEndpoint) {
+        return new TrainingProviderWeb(this.account, serviceEndpoint);
+    }
+
     _createIdentity() {
         return new WalletRPCIdentity(this._config, this._web3);
     }
@@ -77,16 +82,6 @@ class WebSdk extends SnetSDK {
 
     _constructStrategy(concurrentCalls = 1) {
         return new DefaultPaymentStrategy(this._account, concurrentCalls);
-    }
-
-    getTrainingProvider(orgId, serviceId, groupId, serviceEndpoint) {
-        return new TrainingProviderWeb(
-            this.account,
-            orgId,
-            serviceId,
-            groupId,
-            serviceEndpoint
-        );
     }
 }
 
