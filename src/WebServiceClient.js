@@ -26,7 +26,6 @@ class WebServiceClient {
      * @returns {Request}
      */
     async unary(methodDescriptor, props) {
-        console.log('unary');
         const requestProps = await this._generateRequestProps(
             methodDescriptor,
             props
@@ -43,7 +42,7 @@ class WebServiceClient {
      */
     async _generateRequestProps(methodDescriptor, props) {
         const serviceEndpoint = this.metadataProvider.getServiceEndpoint();
-        const host = `${serviceEndpoint.protocol}//${serviceEndpoint.host}`;
+        const host = serviceEndpoint.origin;
         const metadata = await this._enhanceMetadata(
             props.metadata,
             methodDescriptor
@@ -56,6 +55,9 @@ class WebServiceClient {
     }
 
     // TODO is it need to move to Service metadata provider?
+    /*
+     * @param {UnaryMethodDefinition} methodDescriptor
+     */
     async _enhanceMetadata(metadata = new grpc.Metadata(), methodDescriptor) {
         if (this.metadataProvider._options.disableBlockchainOperations) {
             return metadata;
