@@ -42,9 +42,6 @@ const TrainingModel = ({ serviceMetadata }) => {
 
     const getTrainingProviderFromSDK = async () => {
         const training = await getTrainingProvider(
-            serviceMetadata.orgId,
-            serviceMetadata.serviceId,
-            serviceMetadata.groupId,
             serviceEndpoint
         );
         setTrainingProvider(training);
@@ -53,8 +50,12 @@ const TrainingModel = ({ serviceMetadata }) => {
     const createModel = async () => {
         const { address } = await getWalletInfo();
         const params = {
+            address,
+            orgId: serviceMetadata.orgId,
+            serviceId: serviceMetadata.serviceId,
+            groupId: serviceMetadata.groupId,
             grpcServiceName: 'Model name',
-            method: trainingMethod,
+            grpcMethod: trainingMethod,
             serviceName: grpcService,
             description: 'Model description',
             publicAccess: false,
@@ -62,7 +63,6 @@ const TrainingModel = ({ serviceMetadata }) => {
             accessAddressList: [],
         };
         const createdModel = await trainingProvider.createModel(
-            address,
             params
         );
 
@@ -73,7 +73,7 @@ const TrainingModel = ({ serviceMetadata }) => {
         const { address } = await getWalletInfo();
         const params = {
             modelId: model.modelId,
-            method: trainingMethod,
+            grpcMethod: trainingMethod,
             address,
             grpcServiceName: grpcService,
         };
@@ -84,12 +84,15 @@ const TrainingModel = ({ serviceMetadata }) => {
     const updateModel = async (model) => {
         const { address } = await getWalletInfo();
         const params = {
+            orgId: serviceMetadata.orgId,
+            serviceId: serviceMetadata.serviceId,
+            groupId: serviceMetadata.groupId,
             modelId: model.modelId,
             address,
-            method: model.methodName + 'update_model',
+            grpcMethod: trainingMethod,
             grpcServiceName: model.serviceName,
             dataLink: model.dataLink,
-            modelName: model.trainingModelName,
+            modelName: model.trainingModelName + 'update_model',
             description: model.trainingModelDescription,
             publicAccess: !model.isRestrictAccessModel,
             accessAddressList: model.isRestrictAccessModel
@@ -119,7 +122,7 @@ const TrainingModel = ({ serviceMetadata }) => {
         const { address } = await getWalletInfo();
         const params = {
             modelId: model.modelId,
-            method: trainingMethod,
+            grpcMethod: trainingMethod,
             grpcServiceName: grpcService,
             address,
         };
