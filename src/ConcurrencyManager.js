@@ -6,6 +6,11 @@ import {
 } from './proto/token_service_pb_service';
 
 class ConcurrencyManager {
+    /**
+     * @param {Account} account
+     * @param {ServiceMetadataProvider} serviceMetadata
+     * @param {number} concurrentCalls
+     */
     constructor(account, serviceMetadata, concurrentCalls = 1) {
         this._account = account;
         this._concurrentCalls = concurrentCalls;

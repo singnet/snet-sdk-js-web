@@ -5,7 +5,8 @@ import FreeCallPaymentStrategyWeb from './FreeCallPaymentStrategy';
 
 class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
     /**
-     * Initializing the payment strategy
+     * Initializing the payment strategy for web SDK
+     * @param {Account} account
      * @param {number} concurrentCalls
      */
     constructor(account, concurrentCalls) {
@@ -15,8 +16,8 @@ class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
     }
 
     /**
-     * map the metadata for the gRPC call
-     * @param {BaseServiceClient} serviceClient
+     * Get the metadata for the gRPC call with the choice of the default payment strategy
+     * @param {ServiceMetadataProvider} serviceMetadata
      * @returns {Promise<({'snet-payment-type': string}|{'snet-payment-channel-id': string}|{'snet-payment-channel-nonce': string}|{'snet-payment-channel-amount': string}|{'snet-payment-channel-signature-bin': string.base64})[]>}
      */
     async getPaymentMetadata(serviceMetadata) {
