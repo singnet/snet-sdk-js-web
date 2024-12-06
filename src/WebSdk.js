@@ -4,6 +4,7 @@ import RegistryContract from './RegistryContract';
 import { DefaultPaymentStrategy } from './payment_strategies';
 import ServiceMetadataProviderWeb from './ServiceMetadataProvider';
 import { isEmpty } from 'lodash';
+import TrainingProviderWeb from './training/TrainingProvider';
 
 class WebSdk extends SnetSDK {
     constructor(...args) {
@@ -43,8 +44,6 @@ class WebSdk extends SnetSDK {
         groupName = null,
         options = {}
     ) {
-        console.log('createServiceClient web options: ', options);
-
         const serviceMetadata = await this._metadataProvider.metadata(
             orgId,
             serviceId
@@ -77,15 +76,17 @@ class WebSdk extends SnetSDK {
     }
 
     _constructStrategy(concurrentCalls = 1) {
-        console.log('_constructStrategy WEB');
-
-        // const coreStartegy = super._constructStrategy(
-        //     paymentChannelManagementStrategy,
-        //     concurrentCalls
-        // );
-        // console.log("coreStartegy: ", coreStartegy);
-
         return new DefaultPaymentStrategy(this._account, concurrentCalls);
+    }
+
+    getTrainingProvider(orgId, serviceId, groupId, serviceEndpoint) {
+        return new TrainingProviderWeb(
+            this.account,
+            orgId,
+            serviceId,
+            groupId,
+            serviceEndpoint
+        );
     }
 }
 
