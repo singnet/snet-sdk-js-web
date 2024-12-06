@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./App.css"
-import { generateOptions, getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
+import { getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
 import ServiceDemo from "./components/ServiceDemo";
 import ServiceInfo from "./components/ServiceInfo";
 import WalletInfo from "./components/WalletInfo";
 import { isEmpty } from "lodash";
+import TrainingModel from "./components/TrainingModel";
+import freecallsConfig from "./configs/freecallsConfig";
 
 const ExampleService = () => {
   const [serviceMetadata, setServiceMetadata] = useState();
   const [serviceClient, setServiceClient] = useState();
   const [isClientLoading, setIsClientLoading] = useState(false);
-  // const [options, setOptions] = useState(generateOptions());
-  const options = generateOptions();
+  const options = freecallsConfig;
   
   const getServiceClientHandler = async (getServiceClient) => {
     if (isClientLoading) {
@@ -52,18 +53,19 @@ const ExampleService = () => {
 
      getServiceMetadataFromSDK();
   }, [options])
-
+  
     return (
       <div className="service-container">
         <div className="service-info">
           <ServiceInfo serviceMetadata={serviceMetadata} />
           <WalletInfo serviceMetadata={serviceMetadata}/>
         </div>
-        <div className="loadServiceButtons">
+        <div className="button-group">
           {serviceClientButtons.map(button => <button key={button.key} disabled={!serviceMetadata} onClick={() => getServiceClientHandler(button.clientLoader)}>{button.title}</button>
           )}
         </div>
         <ServiceDemo serviceClient={serviceClient}/>
+        {serviceMetadata && <TrainingModel serviceMetadata={serviceMetadata}/>}
       </div>
     );
 }
