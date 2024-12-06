@@ -30,12 +30,15 @@ export class ChannelModelProvider {
 export class TrainingModelProvider {
     _generateModelServiceClient(serviceEndpoint) {
         debug(
-            `TrainingChannelStateService pointing to ${serviceEndpoint.host}, `,
+            `TrainingChannelStateService pointing to ${serviceEndpoint.origin}, `,
             {
                 tags: ['gRPC'],
             }
         );
-        const host = `${serviceEndpoint.protocol}//${serviceEndpoint.host}`;
+        const host = serviceEndpoint.origin;
+        if (!host) {
+            throw new Error('host is undefined');
+        }
         return new ModelClient(host);
     }
 
