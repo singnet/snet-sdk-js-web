@@ -9,22 +9,28 @@ p {
     width: 100%;
 }
 
-.main-service-info {
+.main-service-info-container {
     display: flex;
     gap: 20px
+}
+
+.main-service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .groups-container {
     padding: 10px 0;
 }
 .service-image-container {
-    max-width: 200px;
     max-height: 200px;
 }
 
 .service-image-container img{
     width: 100%;
     height: 100%;
+    object-fit: contain;
 }
 
 .loader {

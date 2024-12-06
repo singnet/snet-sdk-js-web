@@ -1,8 +1,14 @@
+import { isUndefined } from "lodash";
 import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
 import Loader from "../Loader/index.jsx";
+import Table from "../Table/index.jsx";
 import "./styles.css";
+import { getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions.js";
+import { useState } from "react";
 
 const ServiceInfo = ({serviceMetadata}) => {
+    const [availableFreeCalls, setAvailibleFreeCalls] = useState();
+
     if (!serviceMetadata) {
         return <div className="loader"><Loader isLoading={true} /></div>
     }
@@ -18,33 +24,30 @@ const ServiceInfo = ({serviceMetadata}) => {
         ]
     }
 
+    const getAvailableFreeCallsFromSDK = async () => {
+        setAvailibleFreeCalls(await getAvailableFreeCalls(serviceMetadata));
+    }
+    
     return (
         <div className="service-info-container">
-            <div className="main-service-info">
+            <div className="main-service-info-container">
                 {metadata.media.map(image =>
                     <div key={image.url} className="service-image-container">
                         <img src={image.url} alt={image.altText} />
                     </div>
                 )}
-                <h2>{metadata.display_name}</h2>
+                <div className="main-service-info">
+                    <h2>{metadata.display_name}</h2>
+                    <button disabled={!serviceMetadata} onClick={getAvailableFreeCallsFromSDK}>Get free-calls available</button>
+                    {!isUndefined(availableFreeCalls) && <p>Available free-calls: <b>{availableFreeCalls}</b></p>}
+                </div>
             </div>
             <div className="groups-container">
                 <div className="service-image-container">
                     <h3>{group.group_name}:</h3>
                     {group.pricing.map(price =>{
                         const priceInfoMeta = generatePriceInfoMeta(price);
-                        return (
-                            <table className="pricing-info-table" key={price.price_model}>
-                                <tbody>
-                                    {priceInfoMeta.map(priceRow => 
-                                        <tr key={priceRow.title}>
-                                            <th scope="row">{priceRow.title}</th>
-                                            <td>{priceRow.value}</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        )
+                        return <Table key={price.price_model} tableData={priceInfoMeta} />
                     })}
                 </div>
             </div>
