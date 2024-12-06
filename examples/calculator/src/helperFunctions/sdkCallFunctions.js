@@ -11,15 +11,20 @@ const getSDK = async () => {
     return sdk ? sdk : await initSDK();
 };
 
-export const generateOptions = () => {
-    return {
-        disableBlockchainOperations: false,
-        tokenExpirationBlock: 7388515,
-        tokenToMakeFreeCall:
-            '17b77edf22bc5bceae5562f5fb26fea0ccbf7c22c99a56287c14cc90cbe17f633f7338712e6a9dbf1e44dad2fd8c710613354904df688fa4d3a90a54db2afc9e1b',
-        email: 'fospipakno@gufum.com',
-        concurrency: true,
-    };
+export const getTrainingProvider = async (
+    orgId,
+    serviceId,
+    groupId,
+    serviceEndpoint
+) => {
+    const sdk = await getSDK();
+    const trainingProvider = await sdk.getTrainingProvider(
+        orgId,
+        serviceId,
+        groupId,
+        serviceEndpoint
+    );
+    return trainingProvider;
 };
 
 export const getServiceMetadata = async (options) => {
