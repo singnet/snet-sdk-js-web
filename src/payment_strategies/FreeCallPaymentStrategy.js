@@ -5,6 +5,11 @@ import {
 import FreeCallPaymentStrategy from 'snet-sdk-core/payment_strategies/FreeCallPaymentStrategy';
 
 class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
+    /**
+     * Initializing the free-call payment strategy for web SDK
+     * @param {Account} account
+     * @param {number} concurrentCalls
+    */
     constructor(account, serviceMetadata) {
         super(account, serviceMetadata);
         this._serviceMetadata = serviceMetadata;
@@ -15,7 +20,7 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
     }
 
     /**
-     * create the grpc client for free call state service
+     * Create the grpc client for free call state service
      * @returns {FreeCallStateServiceClient}
      * @private
      */

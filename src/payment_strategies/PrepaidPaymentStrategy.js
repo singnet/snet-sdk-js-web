@@ -3,11 +3,17 @@ import { PrepaidMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
 
 class PrepaidPaymentStrategyWeb extends PrepaidPaymentStrategy {
     /**
-     * @param {BaseServiceClient} serviceMetadata
+     * @param {Account} account
+     * @param {ServiceMetadataProvider} serviceMetadata
      * @param {number} blockOffset
      * @param {number} callAllowance
      */
-    constructor(account, serviceMetadata, blockOffset = 240, callAllowance = 1) {
+    constructor(
+        account,
+        serviceMetadata,
+        blockOffset = 240,
+        callAllowance = 1
+    ) {
         super(account, serviceMetadata, blockOffset, callAllowance);
         this.metadataGenerator = new PrepaidMetadataGenerator();
     }
@@ -17,8 +23,6 @@ class PrepaidPaymentStrategyWeb extends PrepaidPaymentStrategy {
      */
     async getPaymentMetadata(serviceMetadata) {
         const metadataFields = await super.getPaymentMetadata(serviceMetadata);
-        //     { 'snet-prepaid-auth-token-bin': tokenBytes.toString('base64') },
-        // ];
         return this.metadataGenerator.generateMetadata(metadataFields);
     }
 }
