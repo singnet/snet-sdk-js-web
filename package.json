@@ -67,8 +67,7 @@
     "loglevel": "^1.9.2",
     "singularitynet-platform-contracts": "^1.0.4",
     "snet-sdk-core": "file:../snet-sdk-core/dist",
-    "web3": "^4.4.0",
-    "winston-transport": "^4.8.0"
+    "web3": "^4.4.0"
   },
   "browser": {
     "tls": false,
