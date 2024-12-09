@@ -15,15 +15,6 @@ class WalletRPCIdentity {
         this.setupAccount();
     }
 
-    async getAddress() {
-        try {
-            const accounts = await this._web3.eth.getAccounts();
-            return accounts[0];
-        } catch (error) {
-            throw new Error('gettind address error: ', error);
-        }
-    }
-
     async signData(sha3Message) {
         try {
             const address = await this.getAddress();
@@ -59,10 +50,14 @@ class WalletRPCIdentity {
     }
 
     async setupAccount() {
+        this._web3.eth.defaultAccount = await this.getAddress();
+    }
+
+    async getAddress() {
         try {
             const accounts = await this._web3.eth.getAccounts();
             if (accounts.length > 0) {
-                this._web3.eth.defaultAccount = accounts[0];
+                return accounts[0];
             } else {
                 error('No accounts found');
             }
