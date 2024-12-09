@@ -7,10 +7,16 @@ import training_pb from './proto/training_pb';
 import { debug } from 'loglevel';
 
 export class ChannelModelProvider {
+    /**
+     * @param {string} serviceEndpoin
+     */
     constructor(serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
     }
 
+    /**
+     * @returns {PaymentChannelStateServiceClient}
+     */
     generatePaymentChannelStateServiceClient() {
         debug(
             `PaymentChannelStateService pointing to ${this.serviceEndpoint.host}, `,
@@ -22,12 +28,19 @@ export class ChannelModelProvider {
         return new PaymentChannelStateServiceClient(host);
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     getChannelStateRequestMethodDescriptor() {
         return PaymentChannelStateService.GetChannelState.requestType;
     }
 }
 
 export class TrainingModelProvider {
+    /**
+     * @param {string} serviceEndpoin
+     * @returns {PaymentChannelStateServiceClient}
+     */
     _generateModelServiceClient(serviceEndpoint) {
         debug(
             `TrainingChannelStateService pointing to ${serviceEndpoint.origin}, `,
@@ -42,26 +55,44 @@ export class TrainingModelProvider {
         return new ModelClient(host);
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getModelRequestMethodDescriptor() {
         return Model.get_all_models.requestType;
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getAuthorizationRequestMethodDescriptor() {
         return training_pb.AuthorizationDetails;
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getCreateModelRequestMethodDescriptor() {
         return Model.create_model.requestType;
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getDeleteModelRequestMethodDescriptor() {
         return Model.delete_model.requestType;
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getUpdateModelRequestMethodDescriptor() {
         return Model.update_model_access.requestType;
     }
 
+    /**
+     * @return {MethodDescriptor}
+     */
     _getModelDetailsRequestMethodDescriptor() {
         return training_pb.ModelDetails;
     }

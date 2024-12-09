@@ -3,6 +3,15 @@ import ConcurrencyManager from './ConcurrencyManager';
 import { ChannelModelProvider } from './ModelsProvider';
 
 class ServiceMetadataProviderWeb extends ServiceMetadataProvider {
+    /**
+     * @param {Account} account
+     * @param {String} orgId
+     * @param {String} serviceId
+     * @param {ServiceMetadata} metadata
+     * @param {MPEContract} mpeContract
+     * @param {Group} group
+     * @param {ServiceClientOptions} [options={}]
+     */
     constructor(
         account,
         orgId,

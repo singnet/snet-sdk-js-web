@@ -2,11 +2,16 @@ import { grpc } from '@improbable-eng/grpc-web';
 import { isEmpty } from 'lodash';
 
 class WebServiceClient {
+    /**
+     * @param {ServiceMetadataProviderWeb} metadataProvider
+     * @param {DefaultPaymentStrategyWeb || FreeCallPaymentStrategyWeb || PaidCallPaymentStrategyWeb || PrepaidPaymentStrategyWeb} paymentChannelManagementStrategy
+     */
     constructor(metadataProvider, paymentChannelManagementStrategy) {
         this.metadataProvider = metadataProvider;
         this.paymentChannelManagementStrategy =
             paymentChannelManagementStrategy;
     }
+
     /**
      * @param {MethodDescriptor} methodDescriptor
      * @param {InvokeRpcOptions} props
@@ -34,7 +39,6 @@ class WebServiceClient {
     }
 
     /**
-     *
      * @param {UnaryMethodDefinition} methodDescriptor
      * @param {UnaryRpcOptions} props
      * @returns {Promise<UnaryRpcOptions>}
@@ -54,8 +58,8 @@ class WebServiceClient {
         };
     }
 
-    // TODO is it need to move to Service metadata provider?
-    /*
+    /**
+     * @param {grpc.Metadata} metadata
      * @param {UnaryMethodDefinition} methodDescriptor
      */
     async _enhanceMetadata(metadata = new grpc.Metadata(), methodDescriptor) {
