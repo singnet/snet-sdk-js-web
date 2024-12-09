@@ -10,7 +10,7 @@ const Error = ({errorMessage}) => {
     }, [errorMessage]);
 
     if (!isErrorShown) {
-        return
+        return null
     }
 
     return <div className="error">{errorMessage}</div>

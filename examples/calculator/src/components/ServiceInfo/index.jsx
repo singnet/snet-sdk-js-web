@@ -10,7 +10,7 @@ const ServiceInfo = ({serviceMetadata}) => {
     const [availableFreeCalls, setAvailibleFreeCalls] = useState();
 
     if (!serviceMetadata) {
-        return <div className="loader"><Loader isLoading={true} /></div>
+        return <div className="loader"></div>
     }
     const metadata = serviceMetadata.metadata;
     const group = serviceMetadata.group;
