@@ -51,8 +51,6 @@ const updateSDK = async () => {
         defaultGasLimit: '210000',
     };
     sdk = new SnetSDK(snetConfig);
-
-    await sdk.setupAccount();
 };
 
 const defineWeb3Provider = () => {
