@@ -2,22 +2,30 @@ import { useState } from "react";
 import { getWalletInfo } from "../../helperFunctions/sdkCallFunctions";
 import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
 import "./styles.css";
-import Loader from "../Loader/index.jsx";
-import Table from "../Table/index.jsx";
+import Loader from "../Loader";
+import Table from "../Table";
+import Error from "../Error";
 
-const WalletInfo = ({serviceMetadata}) => {
+const WalletInfo = () => {
     const [address, setAddress] = useState('');
     const [balance, setBalance] = useState('');
     const [transactionCount, setTransactionCount] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
     const getWalletInfoFromSDK = async () => {
-        setIsLoading(true);
-        const {address, balance, transactionCount} = await getWalletInfo();
-        setAddress(address);
-        setBalance(cogsToAgix(balance))
-        setTransactionCount(transactionCount);
-        setIsLoading(false);
+        setError()
+        try {
+            setIsLoading(true);
+            const {address, balance, transactionCount} = await getWalletInfo();
+            setAddress(address);
+            setBalance(cogsToAgix(balance))
+            setTransactionCount(transactionCount);
+        } catch(error) {
+            setError(error.message)
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const walletInfoMeta = [
@@ -33,6 +41,7 @@ const WalletInfo = ({serviceMetadata}) => {
             </div>
             <Loader isLoading={isLoading} />
             {address && balance && <Table tableData={walletInfoMeta} />}
+            <Error errorMessage={error} />
         </div>
 )}
 

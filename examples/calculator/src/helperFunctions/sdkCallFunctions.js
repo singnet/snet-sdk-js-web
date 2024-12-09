@@ -17,15 +17,21 @@ export const getTrainingProvider = async (serviceEndpoint) => {
     return trainingProvider;
 };
 
+let isServiceMetadataGetting = false;
+
 export const getServiceMetadata = async (options) => {
+    if (isServiceMetadataGetting) {
+        return;
+    }
+    isServiceMetadataGetting = true;
     const sdk = await getSDK();
-    // const options = generateOptions();
     const serviceMetadata = await sdk.createServiceMetadataProvider(
         serviceConfig.orgID,
         serviceConfig.serviceID,
         'default_group',
         options
     );
+    isServiceMetadataGetting = false;
     return serviceMetadata;
 };
 
