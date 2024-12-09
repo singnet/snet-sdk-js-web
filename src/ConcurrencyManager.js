@@ -22,6 +22,11 @@ class ConcurrencyManager {
         return this._concurrentCalls;
     }
 
+    /**
+     * @param {PaymentChannel} channel
+     * @param {number} serviceCallPrice
+     * @returns {Promise<string | undefined>}
+     */
     async getToken(channel, serviceCallPrice) {
         const currentSignedAmount =
             channel.state.currentSignedAmount.toNumber();
@@ -49,6 +54,12 @@ class ConcurrencyManager {
         return token;
     }
 
+    /**
+     * @param {PaymentChannel} channel
+     * @param {number} amount
+     * @returns {MethodDescriptor}
+     * @private
+     */
     async _getTokenServiceRequest(channel, amount) {
         const { nonce } = channel.state;
         const currentBlockNumber = await this._account.getCurrentBlockNumber();
@@ -101,6 +112,12 @@ class ConcurrencyManager {
         });
     }
 
+    /**
+     * @param {hex} mpeSignature
+     * @param {BigNumber} currentBlockNumber
+     * @returns {Buffer} - Signed binary data
+     * @private
+     */
     async _generateTokenSignature(mpeSignature, currentBlockNumber) {
         const mpeSignatureHex = mpeSignature.toString('hex');
         return this._account.signData(
@@ -109,6 +126,14 @@ class ConcurrencyManager {
         );
     }
 
+    /**
+     * Generate signature for getting payment metadata
+     * @param {uint256} channelId
+     * @param {uint256} nonce
+     * @param {uint256} amount
+     * @returns {Promise<Buffer>}
+     * @private
+     */
     async _generateMpeSignature(channelId, nonce, signedAmount) {
         return this._account.signData(
             { t: 'string', v: '__MPE_claim_message' },
@@ -119,6 +144,10 @@ class ConcurrencyManager {
         );
     }
 
+    /**
+     * Generate Token service client
+     * @returns {TokenServiceClient}
+     */
     _generateTokenServiceClient() {
         debug('Creating TokenService client', { tags: ['gRPC'] });
         const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();

@@ -8,8 +8,12 @@ import TrainingProviderWeb from './training/TrainingProvider';
 import { WalletRPCIdentity } from './identities';
 
 class WebSdk extends SnetSDK {
-    constructor(...args) {
-        super(...args);
+    /**
+     * @param {Config} config
+     * @param {IPFSMetadataProvider} metadataProvider
+     */
+    constructor(config, metadataProvider) {
+        super(config, metadataProvider);
         this._registryContract = new RegistryContract(
             this._web3,
             this._networkId
@@ -17,11 +21,8 @@ class WebSdk extends SnetSDK {
     }
 
     /**
-     * @param {string} orgId
-     * @param {string} serviceId
-     * @param {string} [groupName]
+     * @param {ServiceMetadataProviderWeb} metadataProvider
      * @param {PaymentChannelManagementStrategy} [paymentChannelManagementStrategy=DefaultPaymentChannelManagementStrategy]
-     * @param {ServiceClientOptions} options
      * @returns {Promise<WebServiceClient>}
      */
     async createServiceClient(
@@ -39,6 +40,13 @@ class WebSdk extends SnetSDK {
         return new WebServiceClient(metadataProvider, paymentStrategy);
     }
 
+    /**
+     * @param {string} orgId
+     * @param {string} serviceId
+     * @param {string} [groupName]
+     * @param {ServiceClientOptions} options
+     * @returns {Promise<ServiceMetadataProviderWeb>}
+     */
     async createServiceMetadataProvider(
         orgId,
         serviceId,
@@ -67,19 +75,27 @@ class WebSdk extends SnetSDK {
         );
     }
 
+    /**
+     * @param {URL} serviceEndpoint
+     * @returns {TrainingProviderWeb}
+     */
     createTrainingProvider(serviceEndpoint) {
         return new TrainingProviderWeb(this.account, serviceEndpoint);
     }
 
+    /**
+     * @returns {WalletRPCIdentity}
+     * @private
+     */
     _createIdentity() {
         return new WalletRPCIdentity(this._config, this._web3);
     }
 
-    async setupAccount() {
-        // TODO check for what this func
-        await this._account._identity.setupAccount();
-    }
-
+    /**
+     * @param {number} concurrentCalls
+     * @returns {DefaultPaymentStrategy}
+     * @private
+     */
     _constructStrategy(concurrentCalls = 1) {
         return new DefaultPaymentStrategy(this._account, concurrentCalls);
     }

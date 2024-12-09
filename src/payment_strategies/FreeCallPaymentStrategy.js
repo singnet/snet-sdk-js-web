@@ -9,7 +9,7 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
      * Initializing the free-call payment strategy for web SDK
      * @param {Account} account
      * @param {number} concurrentCalls
-    */
+     */
     constructor(account, serviceMetadata) {
         super(account, serviceMetadata);
         this._serviceMetadata = serviceMetadata;
@@ -31,6 +31,10 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
         return new FreeCallStateServiceClient(host);
     }
 
+    /**
+     * @returns {MethodDescriptor}
+     * @private
+     */
     _generateFreeCallStateMethodDescriptor() {
         return FreeCallStateService.GetFreeCallsAvailable;
     }
