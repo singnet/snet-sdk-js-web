@@ -20,8 +20,6 @@ const TrainingModel = ({ serviceMetadata }) => {
 
 
     useEffect(() => {
-        console.log("trainingMethod: ", trainingMethod);
-        
         if (trainingMethod) {
             return;
         }
@@ -32,7 +30,7 @@ const TrainingModel = ({ serviceMetadata }) => {
                 const trainingData = await response.json();
                 setTrainingMethod(trainingData?.trainingMethods[0]);
             } catch (error) {
-                setTrainingMethod(null);;
+                setTrainingMethod(null);
             }
         };
 

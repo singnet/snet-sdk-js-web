@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./App.css"
 import { getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
 import ServiceDemo from "./components/ServiceDemo";
@@ -11,6 +11,7 @@ import freecallsConfig from "./configs/freecallsConfig";
 const ExampleService = () => {
   const [serviceMetadata, setServiceMetadata] = useState();
   const [serviceClient, setServiceClient] = useState();
+  const [serviceClientData, setServiceClientData] = useState();
   const [isClientLoading, setIsClientLoading] = useState(false);
   const options = freecallsConfig;
   
@@ -20,6 +21,8 @@ const ExampleService = () => {
     }
     setIsClientLoading(true);
     const serviceClient = await getServiceClient(serviceMetadata);
+    console.log("serviceClient: ", serviceClient, serviceClient.constructor.name, serviceClient.paymentChannelManagementStrategy.constructor.name);
+    setServiceClientData({name: serviceClient.constructor.name, paymentStrategy: serviceClient.paymentChannelManagementStrategy.constructor.name})
     setServiceClient(serviceClient);
     setIsClientLoading(false);
   }
@@ -64,8 +67,12 @@ const ExampleService = () => {
           {serviceClientButtons.map(button => <button key={button.key} disabled={!serviceMetadata} onClick={() => getServiceClientHandler(button.clientLoader)}>{button.title}</button>
           )}
         </div>
-        <ServiceDemo serviceClient={serviceClient}/>
-        {serviceMetadata && <TrainingModel serviceMetadata={serviceMetadata}/>}
+        {serviceClient && <Fragment>
+          <p>Service client name: {serviceClientData?.name}</p>
+          <p>Service client payment startegy: {serviceClientData?.paymentStrategy}</p>
+          <ServiceDemo serviceClient={serviceClient}/>
+          <TrainingModel serviceMetadata={serviceMetadata}/>
+        </Fragment>}
       </div>
     );
 }
