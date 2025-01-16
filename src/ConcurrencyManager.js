@@ -1,4 +1,3 @@
-import { debug } from 'loglevel';
 import { toBNString } from 'snet-sdk-core/utils/bignumber_helper';
 import {
     TokenService,
