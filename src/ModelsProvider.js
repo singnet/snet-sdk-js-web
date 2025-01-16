@@ -4,7 +4,7 @@ import {
 } from './proto/state_service_pb_service';
 import { Model, ModelClient } from './proto/training_pb_service';
 import training_pb from './proto/training_pb';
-import { debug } from 'loglevel';
+import { logMessage } from 'snet-sdk-core/utils/logger';
 
 export class ChannelModelProvider {
     /**
@@ -18,12 +18,7 @@ export class ChannelModelProvider {
      * @returns {PaymentChannelStateServiceClient}
      */
     generatePaymentChannelStateServiceClient() {
-        debug(
-            `PaymentChannelStateService pointing to ${this.serviceEndpoint.host}, `,
-            {
-                tags: ['gRPC'],
-            }
-        );
+        logMessage('debug', 'ChannelModelProvider', `PaymentChannelStateService pointing to ${this.serviceEndpoint.host}, `);
         const host = `${this.serviceEndpoint.protocol}//${this.serviceEndpoint.host}`;
         return new PaymentChannelStateServiceClient(host);
     }
@@ -42,12 +37,8 @@ export class TrainingModelProvider {
      * @returns {PaymentChannelStateServiceClient}
      */
     _generateModelServiceClient(serviceEndpoint) {
-        debug(
-            `TrainingChannelStateService pointing to ${serviceEndpoint.origin}, `,
-            {
-                tags: ['gRPC'],
-            }
-        );
+        logMessage('debug', 'ChannelModelProvider', `TrainingChannelStateService pointing to ${serviceEndpoint.origin}, `);
+
         const host = serviceEndpoint.origin;
         if (!host) {
             throw new Error('host is undefined');
