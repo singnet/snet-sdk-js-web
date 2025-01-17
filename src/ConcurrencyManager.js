@@ -1,9 +1,9 @@
-import { debug } from 'loglevel';
 import { toBNString } from 'snet-sdk-core/utils/bignumber_helper';
 import {
     TokenService,
     TokenServiceClient,
 } from './proto/token_service_pb_service';
+import { logMessage } from 'snet-sdk-core/utils/logger';
 
 class ConcurrencyManager {
     /**
@@ -149,11 +149,10 @@ class ConcurrencyManager {
      * @returns {TokenServiceClient}
      */
     _generateTokenServiceClient() {
-        debug('Creating TokenService client', { tags: ['gRPC'] });
+        logMessage('debug', 'ConcurrencyManager', 'Creating TokenService client')
         const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();
-        debug(`TokenService pointing to ${serviceEndpoint.host}, `, {
-            tags: ['gRPC'],
-        });
+        logMessage('debug', 'ConcurrencyManager', `TokenService pointing to ${serviceEndpoint.host}, `)
+
         const host = `${serviceEndpoint.protocol}//${serviceEndpoint.host}`;
         return new TokenServiceClient(host);
     }

@@ -1,4 +1,4 @@
-import { error, info } from 'loglevel';
+import { logMessage } from 'snet-sdk-core/utils/logger';
 import Web3 from 'web3';
 
 /**
@@ -30,10 +30,10 @@ class WalletRPCIdentity {
                 this._web3.eth
                     .sendTransaction(transactionObject)
                     .on('transactionHash', (hash) => {
-                        info(`Transaction hash: ${hash}`);
+                        logMessage('info', 'WalletRPCIdentity', `Transaction hash: ${hash}`);
                     })
                     .on('error', (txError) => {
-                        error(`Couldn't send transaction. ${txError}`);
+                        logMessage('error', 'WalletRPCIdentity', `Couldn't send transaction. ${txError}`);
                         reject(txError);
                     })
                     .then((receipt) => {
@@ -59,7 +59,7 @@ class WalletRPCIdentity {
             if (accounts.length > 0) {
                 return accounts[0];
             } else {
-                error('No accounts found');
+                logMessage('error', 'WalletRPCIdentity', 'No accounts found');
             }
         } catch (error) {
             throw new Error('gettind account error: ', error);
