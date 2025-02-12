@@ -20,7 +20,6 @@
   "homepage": "https://github.com/singnet/snet-sdk-js/packages/web",
   "scripts": {
     "build": "babel src --out-dir dist",
-    "build:rollup": "rollup -c --bundleConfigAsCjs",
     "clean": "rimraf dist",
     "clean:build": "npm run clean && npm run build",
     "prepublishOnly": "npm run clean:build",
@@ -51,12 +50,7 @@
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.23.9",
     "@babel/preset-env": "^7.23.9",
-    "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.3.0",
     "jest": "^29.7.0",
-    "jsdoc-to-markdown": "^9.0.4",
-    "rollup": "^4.24.3",
-    "rollup-plugin-peer-deps-external": "^2.2.4"
+    "jsdoc-to-markdown": "^9.0.4"
   }
 }
