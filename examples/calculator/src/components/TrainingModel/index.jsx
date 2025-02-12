@@ -16,7 +16,7 @@ const TrainingModel = ({ serviceMetadata }) => {
     const [createdModel, setCreatedModel] = useState();
     const [excitingModels, setExcitingModels] = useState();
     const [trainingMethod, setTrainingMethod] = useState()
-    const serviceEndpoint = serviceMetadata?.getServiceEndpoint();
+    const serviceEndpoint = serviceMetadata?._getServiceEndpoint();
 
 
     useEffect(() => {

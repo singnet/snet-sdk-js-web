@@ -150,7 +150,7 @@ class ConcurrencyManager {
      */
     _generateTokenServiceClient() {
         logMessage('debug', 'ConcurrencyManager', 'Creating TokenService client')
-        const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();
+        const serviceEndpoint = this._serviceMetadata._getServiceEndpoint();
         logMessage('debug', 'ConcurrencyManager', `TokenService pointing to ${serviceEndpoint.host}, `)
 
         const host = `${serviceEndpoint.protocol}//${serviceEndpoint.host}`;
