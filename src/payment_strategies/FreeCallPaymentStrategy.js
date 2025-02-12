@@ -25,7 +25,7 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
      * @private
      */
     _generateFreeCallStateServiceClient() {
-        const serviceEndpoint = this._serviceMetadata.getServiceEndpoint();
+        const serviceEndpoint = this._serviceMetadata._getServiceEndpoint();
         let host = serviceEndpoint.origin;
 
         return new FreeCallStateServiceClient(host);

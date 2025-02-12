@@ -34,7 +34,7 @@ class ServiceMetadataProviderWeb extends ServiceMetadataProvider {
     }
 
     get ChannelModelProvider() {
-        const serviceEndpoint = this.getServiceEndpoint();
+        const serviceEndpoint = this._getServiceEndpoint();
         return new ChannelModelProvider(serviceEndpoint);
     }
 }
