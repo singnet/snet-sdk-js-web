@@ -62,26 +62,48 @@ class WebServiceClient {
      * @param {grpc.Metadata} metadata
      * @param {UnaryMethodDefinition} methodDescriptor
      */
+    async _enhanceMetadataViaMetadataGenerator(metadata, methodDescriptor) {
+        const { serviceName } = methodDescriptor.service;
+        const { methodName } = methodDescriptor;
+        const customMetadata =
+            await this.metadataProvider._options.metadataGenerator(
+                this,
+                serviceName,
+                methodName
+            );
+        forOwn(customMetadata, (value, key) => {
+            metadata.append(key, value);
+        });
+        return metadata;
+    }
+    
+    _enhanceMetadataDefault(metadata, paymentMetadata) {
+        paymentMetadata.forEach((paymentMeta) => {
+          Object.entries(paymentMeta).forEach(([key, value]) => {
+            metadata.append(key, value);
+          });
+        });
+    
+        metadata.append(
+            "snet-payment-mpe-address", 
+            this.metadataProvider._mpeContract.address
+        );
+        return metadata;
+    }
+    
+    /**
+     * @param {grpc.Metadata} metadata
+     * @param {UnaryMethodDefinition} methodDescriptor
+     */
     async _enhanceMetadata(metadata = new grpc.Metadata(), methodDescriptor) {
         if (this.metadataProvider._options.disableBlockchainOperations) {
-            return metadata;
+          return metadata;
         }
-
+    
         if (this.metadataProvider._options.metadataGenerator) {
-            const { serviceName } = methodDescriptor.service;
-            const { methodName } = methodDescriptor;
-            const customMetadata =
-                await this.metadataProvider._options.metadataGenerator(
-                    this,
-                    serviceName,
-                    methodName
-                );
-            forOwn(customMetadata, (value, key) => {
-                metadata.append(key, value);
-            });
-            return metadata;
+          return await this._enhanceMetadataViaMetadataGenerator(metadata, methodDescriptor);
         }
-
+    
         let paymentMetadata = await this.metadataProvider.fetchPaymentMetadata(
             this.paymentChannelManagementStrategy
         );
@@ -92,17 +114,8 @@ class WebServiceClient {
         if (!Array.isArray(paymentMetadata)) {
             paymentMetadata = [paymentMetadata];
         }
-        paymentMetadata.forEach((paymentMeta) => {
-            Object.entries(paymentMeta).forEach(([key, value]) => {
-                metadata.append(key, value);
-            });
-        });
-
-        metadata.append(
-            'snet-payment-mpe-address',
-            this.metadataProvider._mpeContract.address
-        );
-        return metadata;
+        
+        return this._enhanceMetadataDefault(metadata, paymentMetadata);
     }
 }
 

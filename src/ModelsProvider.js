@@ -2,8 +2,9 @@ import {
     PaymentChannelStateService,
     PaymentChannelStateServiceClient,
 } from './proto/state_service_pb_service';
-import { Model, ModelClient } from './proto/training_pb_service';
-import training_pb from './proto/training_pb';
+import { Daemon, DaemonClient } from "./proto/training_daemon_pb_service";
+import training_daemon_pb from "./proto/training_daemon_pb";
+import training_pb from "./proto/training_pb";
 import { logMessage } from 'snet-sdk-core/utils/logger';
 
 export class ChannelModelProvider {
@@ -43,48 +44,97 @@ export class TrainingModelProvider {
         if (!host) {
             throw new Error('host is undefined');
         }
-        return new ModelClient(host);
+        return new DaemonClient(host);
     }
 
     /**
      * @return {MethodDescriptor}
      */
-    _getModelRequestMethodDescriptor() {
-        return Model.get_all_models.requestType;
-    }
+    _getAllModelRequestMethodDescriptor() {
+        return Daemon.get_all_models.requestType;
+    };
+    
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getTrainingMetadataRequestMethodDescriptor() {
+        return Daemon.get_training_metadata.requestType;
+    };
 
     /**
      * @return {MethodDescriptor}
      */
-    _getAuthorizationRequestMethodDescriptor() {
-        return training_pb.AuthorizationDetails;
-    }
+    _getMethodMetadataRequestMethodDescriptor() {
+        return Daemon.get_method_metadata.requestType;
+    };
 
     /**
      * @return {MethodDescriptor}
      */
     _getCreateModelRequestMethodDescriptor() {
-        return Model.create_model.requestType;
-    }
+        return Daemon.create_model.requestType;
+    };
 
     /**
      * @return {MethodDescriptor}
      */
     _getDeleteModelRequestMethodDescriptor() {
-        return Model.delete_model.requestType;
-    }
+        return Daemon.delete_model.requestType;
+    };
 
     /**
      * @return {MethodDescriptor}
      */
     _getUpdateModelRequestMethodDescriptor() {
-        return Model.update_model_access.requestType;
-    }
+        return Daemon.update_model.requestType;
+    };
 
     /**
      * @return {MethodDescriptor}
      */
-    _getModelDetailsRequestMethodDescriptor() {
-        return training_pb.ModelDetails;
-    }
+    _getValidateModelPriceRequestMethodDescriptor() {
+        return Daemon.validate_model_price.requestType;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getTrainModelPriceRequestMethodDescriptor() {
+        return Daemon.train_model_price.requestType;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getTrainModelRequestMethodDescriptor() {
+        return Daemon.train_model.requestType;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getValidateModelRequestMethodDescriptor() {
+        return Daemon.validate_model.requestType;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getModelStatusRequestMethodDescriptor() {
+        return Daemon.get_model.requestType;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getNewModelRequestMethodDescriptor() {
+        return training_pb.NewModel;
+    };
+
+    /**
+     * @return {MethodDescriptor}
+     */
+    _getAuthorizationRequestMethodDescriptor() { 
+        return training_daemon_pb.AuthorizationDetails;
+    };
 }

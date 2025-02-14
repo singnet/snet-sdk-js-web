@@ -1,5 +1,5 @@
 import PaidCallPaymentStrategy from 'snet-sdk-core/payment_strategies/PaidCallPaymentStrategy';
-import { PaymentMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
+import { PaymentMetadataGenerator, TrainingPaymentMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
 
 class PaidCallPaymentStrategyWeb extends PaidCallPaymentStrategy {
     /**
@@ -16,6 +16,7 @@ class PaidCallPaymentStrategyWeb extends PaidCallPaymentStrategy {
     ) {
         super(account, serviceMetadata, blockOffset, callAllowance);
         this.metadataGenerator = new PaymentMetadataGenerator();
+        this.trainingMetadataGenerator = new TrainingPaymentMetadataGenerator();
     }
 
     /**
@@ -26,6 +27,14 @@ class PaidCallPaymentStrategyWeb extends PaidCallPaymentStrategy {
         const metadataFields = await super.getPaymentMetadata(serviceMetadata);
         return this.metadataGenerator.generateMetadata(metadataFields);
     }
+
+    /**
+     * @returns {Promise<[{'snet-payment-type': string}, {'snet-payment-channel-id': string}, {'snet-payment-channel-nonce': string}, {'snet-payment-channel-amount': string}, {'snet-payment-channel-signature-bin': Buffer}]>}
+     */
+      async getTrainingPaymentMetadata(modelId, amount) {
+        const metadataFields = await super.getTrainingPaymentMetadata(modelId, amount);
+        return this.trainingMetadataGenerator.generateMetadata(metadataFields);
+      }
 }
 
 export default PaidCallPaymentStrategyWeb;
