@@ -45,7 +45,7 @@ class WebServiceClient {
      * @private
      */
     async _generateRequestProps(methodDescriptor, props) {
-        const serviceEndpoint = this.metadataProvider.getServiceEndpoint();
+        const serviceEndpoint = this.metadataProvider._getServiceEndpoint();
         const host = serviceEndpoint.origin;
         const metadata = await this._enhanceMetadata(
             props.metadata,
