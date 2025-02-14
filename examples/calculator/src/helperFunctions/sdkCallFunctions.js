@@ -11,9 +11,9 @@ const getSDK = async () => {
     return sdk ? sdk : await initSDK();
 };
 
-export const getTrainingProvider = async (serviceEndpoint) => {
+export const getTrainingProvider = async (serviceEndpoint, serviceClient) => {
     const sdk = await getSDK();
-    const trainingProvider = await sdk.createTrainingProvider(serviceEndpoint);
+    const trainingProvider = await sdk.createTrainingProvider(serviceEndpoint, serviceClient);
     return trainingProvider;
 };
 

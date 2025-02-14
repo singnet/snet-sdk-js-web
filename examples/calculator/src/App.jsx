@@ -100,7 +100,7 @@ const ExampleService = () => {
           <p>Service client name: {serviceClientData?.name}</p>
           <p>Service client payment startegy: {serviceClientData?.paymentStrategy}</p>
           <ServiceDemo serviceClient={serviceClient}/>
-          <TrainingModel serviceMetadata={serviceMetadata}/>
+          <TrainingModel serviceMetadata={serviceMetadata} serviceClient={serviceClient}/>
         </Fragment>}
         <Error errorMessage={error} />
       </div>

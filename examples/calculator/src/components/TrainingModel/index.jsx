@@ -1,170 +1,100 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
     getTrainingProvider,
     getWalletInfo,
 } from '../../helperFunctions/sdkCallFunctions';
 import './styles.css';
-import Table from '../Table';
 import { isNull } from 'lodash';
+import Model from './Model';
+import Loader from "../Loader";
 
-const grpcService = '/vits.VITSTrainingService/inference'
-    .split('.')[1]
-    .split('/')[0];
-
-const TrainingModel = ({ serviceMetadata }) => {
+const TrainingModel = ({ serviceMetadata, serviceClient }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [trainingProvider, setTrainingProvider] = useState();
-    const [createdModel, setCreatedModel] = useState();
     const [excitingModels, setExcitingModels] = useState();
-    const [trainingMethod, setTrainingMethod] = useState()
+    const [trainingMetadata, setTrainingMetadata] = useState({isTrainingEnabled: false, hasTrainingInProto: false, trainingServicesAndMethods: []})
     const serviceEndpoint = serviceMetadata?._getServiceEndpoint();
 
-
-    useEffect(() => {
-        if (trainingMethod) {
-            return;
-        }
-        const fetchServiceTrainingDataAPI = async () => {
-            try {
-                const url = `${serviceEndpoint}heartbeat`;
-                const response = await fetch(url);
-                const trainingData = await response.json();
-                setTrainingMethod(trainingData?.trainingMethods[0]);
-            } catch (error) {
-                setTrainingMethod(null);
-            }
-        };
-
-        fetchServiceTrainingDataAPI();
-    }, [trainingMethod])
-    
-
     const getTrainingProviderFromSDK = async () => {
-        const training = await getTrainingProvider(
-            serviceEndpoint
-        );
-        setTrainingProvider(training);
-    };
+            const training = await getTrainingProvider(
+                serviceEndpoint,
+                serviceClient
+            );
+            setTrainingProvider(training);
+            getTrainingMetadata(training);
+        };
 
     const createModel = async () => {
-        const { address } = await getWalletInfo();
-        const params = {
-            address,
-            orgId: serviceMetadata.orgId,
-            serviceId: serviceMetadata.serviceId,
-            groupId: serviceMetadata.groupId,
-            grpcServiceName: 'Model name',
-            grpcMethod: trainingMethod,
-            serviceName: grpcService,
-            description: 'Model description',
-            publicAccess: false,
-            dataLink: 'Link to dataset',
-            accessAddressList: [],
-        };
-        const createdModel = await trainingProvider.createModel(
-            params
-        );
-
-        setCreatedModel(createdModel);
+        try {
+            setIsLoading(true);
+            const { address } = await getWalletInfo();
+            const params = {
+                address,
+                name: 'Model not public',
+                description: 'Model description',
+                is_public: false,
+                address_list: ['0x6E7BaCcc00D69eab748eDf661D831cd2c7f3A4DF', '0x0709e9B78756B740ab0C64427f43f8305fD6D1A7'],
+                grpcMethod: trainingMetadata.grpcServiceMethod,
+                serviceName: trainingMetadata.grpcServiceName,
+            };
+            await trainingProvider.createModel(
+                params
+            );
+            await getAllModels();
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const deleteModel = async (model) => {
-        const { address } = await getWalletInfo();
-        const params = {
-            modelId: model.modelId,
-            grpcMethod: trainingMethod,
-            address,
-            grpcServiceName: grpcService,
-        };
-        await trainingProvider.deleteModel(params);
-        await getExistingModel();
+    const getAllModels = async () => {
+        try {
+            setIsLoading(true);
+            const { address } = await getWalletInfo();
+            const params = {
+                grpcMethod: trainingMetadata.grpcServiceMethod,
+                serviceName: trainingMetadata.grpcServiceName,
+                name: "",
+                statuses: [],
+                isPublic: false,
+                createdByAddress: '',
+                pageSize: 100,
+                page: 0,
+                address,
+            };
+            const existingModels = await trainingProvider.getAllModels(params);
+            setExcitingModels(existingModels);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const updateModel = async (model) => {
-        const { address } = await getWalletInfo();
-        const params = {
-            orgId: serviceMetadata.orgId,
-            serviceId: serviceMetadata.serviceId,
-            groupId: serviceMetadata.groupId,
-            modelId: model.modelId,
-            address,
-            grpcMethod: trainingMethod,
-            grpcServiceName: model.serviceName,
-            dataLink: model.dataLink,
-            modelName: model.trainingModelName + 'update_model',
-            description: model.trainingModelDescription,
-            publicAccess: !model.isRestrictAccessModel,
-            accessAddressList: model.isRestrictAccessModel
-                ? model.accessAddresses
-                : [],
-            status: model.status,
-            updatedDate: model.updatedDate,
-        };
-        console.log('updating model: ', params);
 
-        await trainingProvider.updateModel(params);
-        await getExistingModel();
+    const getMethodMetadataByMethod = async () => {
+        try {
+            setIsLoading(true);
+            const params = {
+                grpcMethod: trainingMetadata.grpcServiceMethod,
+                serviceName: trainingMetadata.grpcServiceName,
+            };
+            const methodMetadata =  await trainingProvider.getMethodMetadata(params);;
+            console.log('method metadata by method: ', methodMetadata);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const getExistingModel = async () => {
-        const { address } = await getWalletInfo();
-        const params = {
-            grpcMethod: trainingMethod,
-            grpcServiceName: grpcService,
-            address,
-        };
-        const existingModels = await trainingProvider.getExistingModel(params);
-        setExcitingModels(existingModels);
-    };
+    const trainingActions = [
+        {id: "createModel", label: "Create Model", action: createModel},
+        {id: "getAllModels", label: "Get Existing Models", action: getAllModels},
+        {id: "getMethodMetadataByMethod", label: "Get Method Metadata", action: getMethodMetadataByMethod},
+    ];
 
-    const getModelStatus = async (model) => {
-        const { address } = await getWalletInfo();
-        const params = {
-            modelId: model.modelId,
-            grpcMethod: trainingMethod,
-            grpcServiceName: grpcService,
-            address,
-        };
-        const newModelStatus = await trainingProvider.getModelStatus(params);
-        console.log('new model status: ', newModelStatus);
-    };
-
-    const generateModelInfoMeta = (modelInfo) => {
-        return [
-            { title: 'accessAddressList', value: modelInfo.accessAddressList },
-            { title: 'dataLink', value: modelInfo.dataLink },
-            { title: 'description', value: modelInfo.description },
-            { title: 'methodName', value: modelInfo.methodName },
-            { title: 'modelId', value: modelInfo.modelId },
-            { title: 'modelName', value: modelInfo.modelName },
-            { title: 'publicAccess', value: String(modelInfo.publicAccess) },
-            { title: 'serviceName', value: modelInfo.serviceName },
-            { title: 'status', value: modelInfo.status },
-            { title: 'updatedDate', value: modelInfo.updatedDate },
-        ];
-    };
-
-    const Model = ({ model }) => {
-        const modelInfoMeta = generateModelInfoMeta(model);
-        return (
-            <div className='model-container'>
-                <Table tableData={modelInfoMeta} />
-                <div className='model-buttons button-group'>
-                    <button onClick={() => getModelStatus(model)}>
-                        Get model status
-                    </button>
-                    <button onClick={() => updateModel(model)}>
-                        Update model
-                    </button>
-                    <button
-                        className='delete-button'
-                        onClick={() => deleteModel(model)}
-                    >
-                        Delete model
-                    </button>
-                </div>
-            </div>
-        );
-    };
 
     const ExcitingModels = () => {
         return (
@@ -172,43 +102,46 @@ const TrainingModel = ({ serviceMetadata }) => {
                 <h2>Exciting models</h2>
                 <div className='exciting-models'>
                     {excitingModels.map((excitingModel, index) => (
-                        <Model key={index} model={excitingModel} />
+                        <Model trainingProvider={trainingProvider} getAllModels={getAllModels} key={index} model={excitingModel} />
                     ))}
                 </div>
             </div>
         );
     };
+
+    const getTrainingMetadata = async (trainingProvider) => {
+        const serviceMetadata = await trainingProvider.getServiceMetadata();
+        console.log("getServiceMetadata: ", serviceMetadata);
+        const grpcServiceName = serviceMetadata.trainingmethodsMap[0][0];
+        const grpcServiceMethod = serviceMetadata.trainingmethodsMap[0][1];
+        setTrainingMetadata({...serviceMetadata, grpcServiceName, grpcServiceMethod});
+    }
     
-    if (isNull(trainingMethod)) {
+    if (isNull(trainingMetadata)) {
         return <h2>For this service training is not avalable</h2>
     }
 
     return (
-        <div>
+        <div className='training-model-container'>
             <div className='button-group'>
-                {!trainingProvider ? (
+                {!trainingMetadata.grpcServiceName ? (
                     <button
-                        disabled={!serviceMetadata}
+                        disabled={!serviceMetadata || isLoading}
                         onClick={getTrainingProviderFromSDK}
+                        
                     >
                         Get Training Provider
                     </button>
                 ) : (
-                    <>
-                        <button onClick={createModel}>Create Model</button>
-                        <button onClick={getExistingModel}>
-                            Get Existing Models
+                    trainingActions.map(trainingAction => (
+                        <button key={trainingAction.id} onClick={trainingAction.action}>
+                            {trainingAction.label}
                         </button>
-                    </>
+                    ))
                 )}
             </div>
+            {isLoading && <Loader isLoading={isLoading}/>}
             <div className='models-container'>
-                {createdModel && (
-                    <>
-                        <h2>Created Model</h2>
-                        <Model model={createdModel} />
-                    </>
-                )}
                 {excitingModels && <ExcitingModels />}
             </div>
         </div>
