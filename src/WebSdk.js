@@ -79,8 +79,8 @@ class WebSdk extends SnetSDK {
      * @param {URL} serviceEndpoint
      * @returns {TrainingProviderWeb}
      */
-    createTrainingProvider(serviceEndpoint) {
-        return new TrainingProviderWeb(this.account, serviceEndpoint);
+    createTrainingProvider(serviceEndpoint, serviceClient) {
+        return new TrainingProviderWeb(this.account, serviceEndpoint, serviceClient );
     }
 
     /**
