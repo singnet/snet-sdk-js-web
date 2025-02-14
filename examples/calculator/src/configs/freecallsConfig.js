@@ -1,8 +1,7 @@
 export default {
     disableBlockchainOperations: false,
-    tokenExpirationBlock: 7389838,
-    tokenToMakeFreeCall:
-        'af33f4064de904183ffe5447dd44554c0123815fda503c9f8a50b26b291cf16a78de705c6d85077ddc673f55333f9383382c5330c4f803278940c52df03788631b',
-    email: 'fospipakno@gufum.com',
+    tokenExpiryDateBlock: 7865615,
+    tokenToMakeFreeCall: "09998bee101e668d21787eda67a3aca1ff5923817fa12df046ef051ce261f6a07d97ee22ecbf238e7ae91553897b35ac26fe8efec4a487208a26abf046e5fb921b",
+    email: "matrejukna@gufum.com",
     concurrency: true,
 };
