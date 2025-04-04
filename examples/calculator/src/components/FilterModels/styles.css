@@ -1,0 +1,83 @@
+.filters-container {
+    position: relative;
+}
+
+.filters-form {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 250px;
+    max-height: 400px;
+    overflow: auto;
+    padding: 15px;
+    left: 30px;
+    top: 50px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.58);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-group label span {
+    width: 100%;
+}
+
+.filter-group input[type="text"],
+.filter-group input[type="number"],
+.filter-group select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.filter-group input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.filters-container .button-group {
+    margin: 0;
+}
+
+.filter-button {
+    padding: 1px;
+    border: none;
+    background: none;
+}
+
+.filter-button:hover {
+    background: none;
+}
+
+.filter-button:hover svg path {
+    stroke: var(--accent-color);
+}
+
+.filter-button svg {
+    width: 30px;
+    height: 30px;
+}
+
+.filter-button svg path {
+    stroke: #333;
+}

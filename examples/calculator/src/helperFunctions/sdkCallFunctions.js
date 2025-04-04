@@ -28,7 +28,7 @@ export const getServiceMetadata = async (options) => {
     const serviceMetadata = await sdk.createServiceMetadataProvider(
         serviceConfig.orgID,
         serviceConfig.serviceID,
-        'default_group',
+        undefined,
         options
     );
     isServiceMetadataGetting = false;

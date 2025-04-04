@@ -92,6 +92,7 @@ const Model = ({ model, trainingProvider, getAllModels }) => {
         const params = {
             modelId: model.modelId,
             address,
+            isUnifiedSign: true,
         };
         const price = await trainingProvider.getTrainModelPrice(params);
         console.log('getTrainModelPrice: ', price);
@@ -107,18 +108,6 @@ const Model = ({ model, trainingProvider, getAllModels }) => {
         };
         const getedModel = await trainingProvider.getModel(params);
         console.log('getModel: ', getedModel);
-        setIsLoading(false);
-    };
-
-    const getModelStatus = async (model) => {
-        setIsLoading(true);
-        const { address } = await getWalletInfo();
-        const params = {
-            modelId: model.modelId,
-            address,
-        };
-        const newModelStatus = await trainingProvider.getModelStatus(params);
-        console.log('new model status: ', newModelStatus);
         setIsLoading(false);
     };
 
@@ -156,7 +145,6 @@ const Model = ({ model, trainingProvider, getAllModels }) => {
         {id: "getTrainModelPrice", label: "Get train price", action: getTrainModelPrice},
         {id: "validateModel", label: "Validate model", action: validateModel},
         {id: "trainModel", label: "Train model", action: trainModel},
-        {id: "getModelStatus", label: "Get model status", action: getModelStatus},
         {id: "getMethodMetadataByModelId", label: "Get method metadata by Model Id", action: getMethodMetadataByModelId},
         {id: "getModel", label: "Get model", action: getModel},
         {id: "updateModel", label: "Update model", action: updateModel},
