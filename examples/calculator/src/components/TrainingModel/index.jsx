@@ -7,11 +7,12 @@ import './styles.css';
 import { isNull } from 'lodash';
 import Model from './Model';
 import Loader from "../Loader";
+import FilterModels from '../FilterModels';
 
 const TrainingModel = ({ serviceMetadata, serviceClient }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [models, setModels] = useState();
     const [trainingProvider, setTrainingProvider] = useState();
-    const [excitingModels, setExcitingModels] = useState();
     const [trainingMetadata, setTrainingMetadata] = useState({isTrainingEnabled: false, hasTrainingInProto: false, trainingServicesAndMethods: []})
     const serviceEndpoint = serviceMetadata?._getServiceEndpoint();
 
@@ -37,6 +38,8 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
                 grpcMethod: trainingMetadata.grpcServiceMethod,
                 serviceName: trainingMetadata.grpcServiceName,
             };
+            console.log("params: ", params);
+            
             await trainingProvider.createModel(
                 params
             );
@@ -48,23 +51,17 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
         }
     };
 
-    const getAllModels = async () => {
+    const getAllModels = async (filters = {}) => {
         try {
             setIsLoading(true);
             const { address } = await getWalletInfo();
             const params = {
-                grpcMethod: trainingMetadata.grpcServiceMethod,
-                serviceName: trainingMetadata.grpcServiceName,
-                name: "",
-                statuses: [],
-                isPublic: false,
-                createdByAddress: '',
-                pageSize: 100,
-                page: 0,
-                address,
+                ...filters,
+                isUnifiedSign: true, 
+                address, 
             };
             const existingModels = await trainingProvider.getAllModels(params);
-            setExcitingModels(existingModels);
+            setModels(existingModels);
         } catch (err) {
             console.log(err);
         } finally {
@@ -91,7 +88,6 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
 
     const trainingActions = [
         {id: "createModel", label: "Create Model", action: createModel},
-        {id: "getAllModels", label: "Get Existing Models", action: getAllModels},
         {id: "getMethodMetadataByMethod", label: "Get Method Metadata", action: getMethodMetadataByMethod},
     ];
 
@@ -101,7 +97,7 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
             <div className='exciting-models-container'>
                 <h2>Exciting models</h2>
                 <div className='exciting-models'>
-                    {excitingModels.map((excitingModel, index) => (
+                    {models.map((excitingModel, index) => (
                         <Model trainingProvider={trainingProvider} getAllModels={getAllModels} key={index} model={excitingModel} />
                     ))}
                 </div>
@@ -110,10 +106,13 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
     };
 
     const getTrainingMetadata = async (trainingProvider) => {
-        const serviceMetadata = await trainingProvider.getServiceMetadata();
+        
+        const serviceMetadata = await trainingProvider.getTrainingMetadata();
+        console.log("trainingProvider; ", serviceMetadata.trainingmethodsMap[0][1].valuesList.stringValue);
         console.log("getServiceMetadata: ", serviceMetadata);
         const grpcServiceName = serviceMetadata.trainingmethodsMap[0][0];
-        const grpcServiceMethod = serviceMetadata.trainingmethodsMap[0][1];
+        const grpcServiceMethod = serviceMetadata.trainingmethodsMap[0][1].valuesList[0].stringValue;
+        console.log("getServiceMetadata: ", grpcServiceName, grpcServiceMethod, serviceMetadata.trainingmethodsMap[0][1]);
         setTrainingMetadata({...serviceMetadata, grpcServiceName, grpcServiceMethod});
     }
     
@@ -132,17 +131,25 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
                     >
                         Get Training Provider
                     </button>
-                ) : (
-                    trainingActions.map(trainingAction => (
-                        <button key={trainingAction.id} onClick={trainingAction.action}>
-                            {trainingAction.label}
-                        </button>
-                    ))
+                ): (
+                    <>
+                        <FilterModels
+                            trainingMetadata={trainingMetadata}
+                            onFilterApply={getAllModels}
+                        />
+                        {
+                            trainingActions.map(trainingAction => (
+                                <button key={trainingAction.id} onClick={trainingAction.action}>
+                                    {trainingAction.label}
+                                </button>
+                            ))
+                        }
+                    </>
                 )}
             </div>
             {isLoading && <Loader isLoading={isLoading}/>}
             <div className='models-container'>
-                {excitingModels && <ExcitingModels />}
+                {models && <ExcitingModels />}
             </div>
         </div>
     );

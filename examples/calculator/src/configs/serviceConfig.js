@@ -1,4 +1,4 @@
 export default {
-    orgID: 'semyon_dev',
-    serviceID: 'semyon_dev'
+    orgID: 'semyon_dev',// 'egor-sing-test',
+    serviceID: 'semyon_dev'// 'video-calculator',
 };

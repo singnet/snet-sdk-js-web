@@ -6,6 +6,17 @@
   --accent-color: rgb(37 89 196);
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #F2F2F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 10px;
+}
+
 input, select {
   width: 100%;
   border: 1px solid var(--accent-color);
@@ -18,8 +29,12 @@ button, input, select {
 }
 
 button {
-  border: 1px solid var(--accent-color);
+  border: none;
   background: rgb(37, 89, 196, 0.1);
+}
+
+button:hover {
+  background: rgb(37, 89, 196, 0.3);
 }
 
 td, th {
@@ -45,10 +60,7 @@ td, th {
 
 .service-info {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5%;
-  align-items: start;
+  position: relative;
 }
 
 .button-group {

@@ -17,3 +17,9 @@ h2 {
 .model-buttons {
     justify-content: space-between;
 }
+
+.button-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
