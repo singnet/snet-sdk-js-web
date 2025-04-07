@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { ReactComponent as FilterIcon } from "../../assets/images/FilterIcon.svg"
+import { useState } from 'react';
+import { ReactComponent as FilterIcon } from "../../../assets/images/FilterIcon.svg"
 import { serviceStatus } from 'snet-sdk-core/constants/TrainingConstants';
 import './styles.css';
-import PopUp from '../PopUp';
+import PopUp from '../../PopUp';
 
 const FilterModels = ({ trainingMetadata, onFilterApply }) => {
-    const filterRef = useRef();
     const [isFiltersView, setIsFiltersView] = useState(false);
     const initiateFilterState = {
         grpcMethod: trainingMetadata?.grpcServiceMethod,
@@ -18,18 +17,6 @@ const FilterModels = ({ trainingMetadata, onFilterApply }) => {
         page: 0,
     }
     const [filters, setFilters] = useState(initiateFilterState);
-
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (filterRef.current && !filterRef.current.contains(event.target)) {
-                setIsFiltersView(false)
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [filterRef]);
     
     const resetFilter = () => {
         setFilters(initiateFilterState)
@@ -55,9 +42,7 @@ const FilterModels = ({ trainingMetadata, onFilterApply }) => {
         setFilters(prev => ({ ...prev, isPublic: value === 'null' ? null : value === 'true' }));
     };
 
-    const handleApply = () => {
-        console.log("apply filtrer: ",filters);
-        
+    const handleApply = () => {  
         onFilterApply(filters);
     };
 
@@ -116,7 +101,7 @@ const FilterModels = ({ trainingMetadata, onFilterApply }) => {
                 <div className="filter-group">
                     <label>Is Public:</label>
                     <select name="isPublic" value={filters.isPublic} onChange={handleIsPublicChange}>
-                        <option value="null">Null</option>
+                        <option value="null">All</option>
                         <option value="true">True</option>
                         <option value="false">False</option>
                     </select>

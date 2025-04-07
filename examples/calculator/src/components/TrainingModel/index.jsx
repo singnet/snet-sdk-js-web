@@ -7,14 +7,27 @@ import './styles.css';
 import { isNull } from 'lodash';
 import Model from './Model';
 import Loader from "../Loader";
-import FilterModels from '../FilterModels';
+import FilterModels from './FilterModels';
+import EditModelPopUp, { EditModelPopIpTypes } from './EditModelPopUp';
+import PopUp from '../PopUp';
+import Table from '../Table';
 
 const TrainingModel = ({ serviceMetadata, serviceClient }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isCreateModelView, setIsCreateModelView] = useState(false);
     const [models, setModels] = useState();
     const [trainingProvider, setTrainingProvider] = useState();
     const [trainingMetadata, setTrainingMetadata] = useState({isTrainingEnabled: false, hasTrainingInProto: false, trainingServicesAndMethods: []})
-    const serviceEndpoint = serviceMetadata?._getServiceEndpoint();
+    const [methodMetadata, setMethodMetadata] = useState({
+        isOpen: false,
+        data: ''
+    });
+
+    const serviceEndpoint = new URL("https://3f61-185-167-96-119.ngrok-free.app") //serviceMetadata?._getServiceEndpoint(); TODO
+
+    const closeMethadataPopUp = () => {
+        setMethodMetadata({...methodMetadata, isOpen: false})
+    }
 
     const getTrainingProviderFromSDK = async () => {
             const training = await getTrainingProvider(
@@ -25,31 +38,27 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
             getTrainingMetadata(training);
         };
 
-    const createModel = async () => {
+    const createModel = async (modelParams) => {
         try {
-            setIsLoading(true);
             const { address } = await getWalletInfo();
             const params = {
                 address,
-                name: 'Model not public',
-                description: 'Model description',
-                is_public: false,
-                address_list: ['0x6E7BaCcc00D69eab748eDf661D831cd2c7f3A4DF', '0x0709e9B78756B740ab0C64427f43f8305fD6D1A7'],
-                grpcMethod: trainingMetadata.grpcServiceMethod,
-                serviceName: trainingMetadata.grpcServiceName,
+                ...modelParams
             };
-            console.log("params: ", params);
-            
+            console.log("params: ", params);     
             await trainingProvider.createModel(
                 params
             );
+            setIsCreateModelView(false);
             await getAllModels();
         } catch (err) {
             console.log(err);
-        } finally {
-            setIsLoading(false);
         }
     };
+
+    const closeCreateModel = () => {
+        setIsCreateModelView(false);
+    }
 
     const getAllModels = async (filters = {}) => {
         try {
@@ -77,17 +86,20 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
                 grpcMethod: trainingMetadata.grpcServiceMethod,
                 serviceName: trainingMetadata.grpcServiceName,
             };
-            const methodMetadata =  await trainingProvider.getMethodMetadata(params);;
-            console.log('method metadata by method: ', methodMetadata);
+            const metadata =  await trainingProvider.getMethodMetadata(params);
+            const parsedMetadata = Object.keys(metadata).map(metadataKey => ({title: metadataKey, value: metadata[metadataKey] }))
+            console.log('method metadata by method: ', metadata);
+            setMethodMetadata({isOpen: true, data: parsedMetadata})
         } catch (err) {
             console.log(err);
+            setMethodMetadata({isOpen: false, data: ""})
         } finally {
             setIsLoading(false);
         }
     };
 
     const trainingActions = [
-        {id: "createModel", label: "Create Model", action: createModel},
+        {id: "createModel", label: "Create Model", action: () => setIsCreateModelView(true)},
         {id: "getMethodMetadataByMethod", label: "Get Method Metadata", action: getMethodMetadataByMethod},
     ];
 
@@ -98,7 +110,7 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
                 <h2>Exciting models</h2>
                 <div className='exciting-models'>
                     {models.map((excitingModel, index) => (
-                        <Model trainingProvider={trainingProvider} getAllModels={getAllModels} key={index} model={excitingModel} />
+                        <Model trainingProvider={trainingProvider} getAllModels={getAllModels} key={index} modelData={excitingModel} />
                     ))}
                 </div>
             </div>
@@ -106,7 +118,6 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
     };
 
     const getTrainingMetadata = async (trainingProvider) => {
-        
         const serviceMetadata = await trainingProvider.getTrainingMetadata();
         console.log("trainingProvider; ", serviceMetadata.trainingmethodsMap[0][1].valuesList.stringValue);
         console.log("getServiceMetadata: ", serviceMetadata);
@@ -147,6 +158,16 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
                     </>
                 )}
             </div>
+            <PopUp isPopupView={methodMetadata.isOpen} closePopUp={closeMethadataPopUp}>
+                <Table tableData={methodMetadata.data} />
+            </PopUp>
+            <EditModelPopUp
+                isModalView={isCreateModelView}
+                closeModal={closeCreateModel}
+                trainingMetadata={trainingMetadata}
+                action={createModel}
+                type={EditModelPopIpTypes.CREATE}
+            />
             {isLoading && <Loader isLoading={isLoading}/>}
             <div className='models-container'>
                 {models && <ExcitingModels />}

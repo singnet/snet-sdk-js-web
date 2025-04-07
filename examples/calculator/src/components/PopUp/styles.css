@@ -4,10 +4,11 @@
     flex-direction: column;
     gap: 10px;
     min-width: 250px;
-    max-height: 400px;
+    max-height: 450px;
     overflow: auto;
     padding: 15px;
     top: 50px;
+    z-index: 5;
     border-radius: 6px;
     margin-bottom: 15px;
     background-color: rgba(255, 255, 255, 0.58);
