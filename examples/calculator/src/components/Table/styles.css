@@ -1,4 +1,4 @@
-/* .table th, .table td {
+/* .table th; .table td {
     width: 50%;
 } */
 
@@ -8,4 +8,36 @@
 
 .table td {
     word-break: break-word;
+}
+
+.row {
+    width: 100%;
+    text-align: left;
+    position: relative;
+}
+
+.row td {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    height: min-content;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    transition: all 0.1s;
+}
+
+.row td:hover {
+    width: 100%;
+    z-index: 1;
+    word-break: break-word;
+    background: white;
+    position: absolute;
+    overflow: auto;
+    height: min-content;
+    line-clamp: 10;
+    -webkit-line-clamp: 10;
+    padding: 0 0 5px 5px;
+    transition: all 0.1s;
 }

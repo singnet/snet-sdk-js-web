@@ -5,7 +5,7 @@ const Table = ({tableData, className}) => {
         <table className={className ? className : 'table'}>
             <tbody>
                 {tableData.map((modelRow) => (
-                    <tr key={modelRow.title}>
+                    <tr className='row' key={modelRow.title}>
                         <th scope='row'>{modelRow.title}</th>
                         <td>{modelRow.value}</td>
                     </tr>
