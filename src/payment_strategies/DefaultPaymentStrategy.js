@@ -42,9 +42,7 @@ class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {
                 serviceMetadata
             );
         }
-        const metadata = await paymentStrategy.getPaymentMetadata(
-            serviceMetadata
-        );
+        const metadata = await paymentStrategy.getPaymentMetadata();
         return metadata;
     }
 }
