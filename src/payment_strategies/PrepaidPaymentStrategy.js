@@ -21,8 +21,8 @@ class PrepaidPaymentStrategyWeb extends PrepaidPaymentStrategy {
     /**
      * @returns {Promise<[{'snet-payment-type': string}, {'snet-payment-channel-id': string}, {'snet-payment-channel-nonce': string}, {'snet-prepaid-auth-token-bin': *}]>}
      */
-    async getPaymentMetadata(serviceMetadata) {
-        const metadataFields = await super.getPaymentMetadata(serviceMetadata);
+    async getPaymentMetadata() {
+        const metadataFields = await super.getPaymentMetadata();
         return this.metadataGenerator.generateMetadata(metadataFields);
     }
 }
