@@ -50,7 +50,7 @@ export class TrainingModelProvider {
     /**
      * @return {MethodDescriptor}
      */
-    _getAllModelRequestMethodDescriptor() {
+    _getAllModelsRequestMethodDescriptor() {
         return Daemon.get_all_models.requestType;
     };
     

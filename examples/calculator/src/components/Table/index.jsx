@@ -1,11 +1,11 @@
 import './styles.css';
 
-const Table = ({tableData}) => {
+const Table = ({tableData, className}) => {
     return (
-        <table className='table'>
+        <table className={className ? className : 'table'}>
             <tbody>
                 {tableData.map((modelRow) => (
-                    <tr key={modelRow.title}>
+                    <tr className='row' key={modelRow.title}>
                         <th scope='row'>{modelRow.title}</th>
                         <td>{modelRow.value}</td>
                     </tr>

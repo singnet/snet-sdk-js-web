@@ -1,0 +1,25 @@
+.popup {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 250px;
+    max-height: 450px;
+    overflow: auto;
+    padding: 15px;
+    top: 50px;
+    z-index: 5;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.58);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+.popup.right {
+    left: 30px;
+}
+
+.popup.left {
+    right: 30px;
+}

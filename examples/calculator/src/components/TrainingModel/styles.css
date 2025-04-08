@@ -2,6 +2,10 @@ h2 {
     margin: 0.5rem 0;
 }
 
+.training-model-container, .model-container .model-buttons {
+    position: relative;
+}
+
 .models-container, .exciting-models {
     display: flex;
     gap: 50px;
@@ -16,4 +20,18 @@ h2 {
 
 .model-buttons {
     justify-content: space-between;
+}
+
+.button-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.data-link-input {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
 }

@@ -42,14 +42,17 @@ const ServiceInfo = ({serviceMetadata}) => {
                     {!isUndefined(availableFreeCalls) && <p>Available free-calls: <b>{availableFreeCalls}</b></p>}
                 </div>
             </div>
+            <h2>Service groups:</h2>
             <div className="groups-container">
-                <div className="service-image-container">
-                    <h3>{group.group_name}:</h3>
-                    {group.pricing.map(price =>{
-                        const priceInfoMeta = generatePriceInfoMeta(price);
-                        return <Table key={price.price_model} tableData={priceInfoMeta} />
-                    })}
-                </div>
+                {metadata.groups.map((group) => (
+                    <div key={group.group_id} className="group">
+                        <h3>{group.group_name}</h3>
+                        {group.pricing.map(price =>{
+                            const priceInfoMeta = generatePriceInfoMeta(price);
+                            return <Table key={price.price_model} tableData={priceInfoMeta} />
+                        })}
+                    </div>
+                ))}
             </div>
         </div>
     )

@@ -9,3 +9,42 @@
   font-size: 18px;
   font-weight: 500;
 }
+
+.invoke-button {
+  text-align: center,
+}
+
+.alert-message {
+  width: 100%;
+}
+
+.alerts-container {
+  display: block;
+}
+
+.alerts-container p {
+  text-align: center !important;
+}
+
+.output-line {
+  background: #F1F1F1;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.response-category {
+  font-weight: bold;
+}
+
+.output-label {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

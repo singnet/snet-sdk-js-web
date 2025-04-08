@@ -30,14 +30,14 @@ class ConcurrencyManager {
     async getToken(channel, serviceCallPrice) {
         const currentSignedAmount =
             channel.state.currentSignedAmount.toNumber();
-        if (currentSignedAmount !== 0) {
+        const newAmountToBeSigned = currentSignedAmount + serviceCallPrice;
+        if (newAmountToBeSigned !== 0) {
             const { plannedAmount, usedAmount, token } =
-                await this._getTokenForAmount(channel, currentSignedAmount);
+                await this._getTokenForAmount(channel, newAmountToBeSigned);
             if (usedAmount < plannedAmount) {
                 return token;
             }
         }
-        const newAmountToBeSigned = currentSignedAmount + serviceCallPrice;
         return this._getNewToken(channel, newAmountToBeSigned);
     }
 

@@ -1,0 +1,19 @@
+.header {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+.header img {
+    max-width: 200px;
+}
+
+.header .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}

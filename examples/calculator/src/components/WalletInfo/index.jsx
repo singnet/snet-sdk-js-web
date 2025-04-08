@@ -5,16 +5,19 @@ import "./styles.css";
 import Loader from "../Loader";
 import Table from "../Table";
 import Error from "../Error";
+import PopUp from "../PopUp";
 
 const WalletInfo = () => {
     const [address, setAddress] = useState('');
     const [balance, setBalance] = useState('');
     const [transactionCount, setTransactionCount] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isWalletDataVisible, setIsWalletDataVisible] = useState(false);
     const [error, setError] = useState();
 
     const getWalletInfoFromSDK = async () => {
-        setError()
+        setError();
+        setIsWalletDataVisible(true);
         try {
             setIsLoading(true);
             const {address, balance, transactionCount} = await getWalletInfo();
@@ -39,8 +42,14 @@ const WalletInfo = () => {
             <div className="button-group">
                 <button onClick={getWalletInfoFromSDK}>Get wallet info</button>
             </div>
-            <Loader isLoading={isLoading} />
-            {address && balance && <Table tableData={walletInfoMeta} />}
+            <PopUp 
+                isPopupView={isWalletDataVisible}
+                closePopUp={() => setIsWalletDataVisible(false)}
+                position="left"
+            >
+                <Loader isLoading={isLoading} />
+                {!isLoading && address && balance && <Table className="wallet-info-table" tableData={walletInfoMeta} />}
+            </PopUp>
             <Error errorMessage={error} />
         </div>
 )}
