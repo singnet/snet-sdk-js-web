@@ -1,5 +1,5 @@
-.App {
-  font-size: 16px;
+* {
+  box-sizing: border-box;
 }
 
 :root {
@@ -37,9 +37,8 @@ button:hover {
   background: rgb(37, 89, 196, 0.3);
 }
 
-td, th {
-  text-align: left;
-  padding: 3px;
+.App {
+  font-size: 16px;
 }
 
 .service-container {
