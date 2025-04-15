@@ -1,13 +1,14 @@
 import './styles.css';
 
 const Table = ({tableData, className}) => {
+    const tableClasses = `${className || ""} table`; 
     return (
-        <table className={className ? className : 'table'}>
+        <table className={tableClasses}>
             <tbody>
                 {tableData.map((modelRow) => (
                     <tr className='row' key={modelRow.title}>
-                        <th scope='row'>{modelRow.title}</th>
-                        <td>{modelRow.value}</td>
+                        <td className='cell left-col'>{modelRow.title}</td>
+                        <td className='cell right-col scrollable'> {modelRow.value}</td>
                     </tr>
                 ))}
             </tbody>
