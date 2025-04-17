@@ -27,6 +27,7 @@ class HateSpeechDetection extends React.Component {
     this.inputMaxLengthHelperFunction = this.inputMaxLengthHelperFunction.bind(
       this
     );
+    this.backToInputAction = this.backToInputAction.bind(this);
 
     this.state = state;
   }
@@ -248,6 +249,27 @@ class HateSpeechDetection extends React.Component {
     );
   }
 
+  backToInputAction() {
+    this.setState({
+      isSubmitCompleted: false,
+      isLoading: false,
+      response: undefined,
+    });
+  }
+  renderBackToInputControls() {
+    const { labels } = LABELS;
+
+    return (
+      <div className="back-to-input-button">
+        <button
+          onClick={this.backToInputAction}
+        >
+          {labels.BACK_TO_INPUT_BUTTON}
+        </button>
+      </div>
+    );
+  }
+
   renderServiceOutput() {
     const { response } = this.state;
     const { outputBlocks } = BLOCKS;
@@ -261,6 +283,7 @@ class HateSpeechDetection extends React.Component {
       <div className="column">
         {this.renderTextArea(outputBlocks.USER_TEXT_INPUT)}
         {this.renderOutputBlockSet()}
+        {this.renderBackToInputControls()}
       </div>
     );
   }

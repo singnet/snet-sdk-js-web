@@ -97,6 +97,7 @@ export const LABELS = {
     USER_GUIDE: "User's guide",
     ORIGINAL_PROJECT: "View original project",
     INVOKE_BUTTON: "Invoke",
+    BACK_TO_INPUT_BUTTON: "Back to input",
   },
   status: {
     NO_RESPONSE: "Something went wrong...",
