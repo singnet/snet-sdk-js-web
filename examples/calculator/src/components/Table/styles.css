@@ -1,43 +1,27 @@
-/* .table th; .table td {
-    width: 50%;
-} */
-
-.table th {
-    font-weight: 500;
+table, tr, td {
+    all: unset;
 }
-
-.table td {
-    word-break: break-word;
+.table tbody {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    width: 100%;
 }
 
 .row {
-    width: 100%;
-    text-align: left;
-    position: relative;
+    display: contents;
 }
 
-.row td {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    height: min-content;
-    line-clamp: 1;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    transition: all 0.1s;
+.cell {
+    overflow-x: auto;
 }
 
-.row td:hover {
-    width: 100%;
-    z-index: 1;
-    word-break: break-word;
-    background: white;
-    position: absolute;
-    overflow: auto;
-    height: min-content;
-    line-clamp: 10;
-    -webkit-line-clamp: 10;
-    padding: 0 0 5px 5px;
-    transition: all 0.1s;
+.left-col {
+    font-weight: 500;
+    white-space: nowrap;
+    padding-right: 3px;
+}
+
+.right-col .scrollable {
+    overflow-x: auto;
+    white-space: nowrap;
 }
