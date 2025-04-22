@@ -1,4 +1,7 @@
 export default {
-    orgID: 'egor-sing-test', //'semyon_dev',
-    serviceID: 'hate-detection', //'semyon_dev'
+    // orgID: 'egor-sing-test',
+    // serviceID: 'hate-detection',
+
+    orgID: 'semyon_dev',
+    serviceID: 'semyon_dev',
 };
