@@ -17,6 +17,8 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
             this._generateFreeCallStateServiceClient();
         this._freeCallStateMethodDescriptor =
             this._generateFreeCallStateMethodDescriptor();
+        this._freeCallTokenMethodDescriptor =
+            this._generateFreeCallTokenMethodDescriptor();
     }
 
     /**
@@ -38,6 +40,15 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
     _generateFreeCallStateMethodDescriptor() {
         return FreeCallStateService.GetFreeCallsAvailable;
     }
+
+    /**
+     * @returns {MethodDescriptor}
+     * @private
+     */
+    _generateFreeCallTokenMethodDescriptor() {
+        return FreeCallStateService.GetFreeCallToken;
+    }
+
 }
 
 export default FreeCallPaymentStrategyWeb;
