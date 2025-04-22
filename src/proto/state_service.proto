@@ -77,7 +77,9 @@ message GetFreeCallTokenRequest{
 
 message FreeCallToken{
   string token_base64 = 1;
-  string token = 2;
+  string token_hex = 2;
+  bytes token = 3;
+  uint64 token_expiration_block = 4;
 }
 
 message FreeCallStateRequest {
