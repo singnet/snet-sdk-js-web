@@ -74,6 +74,15 @@ FreeCallStateService.GetFreeCallsAvailable = {
   responseType: state_service_pb.FreeCallStateReply
 };
 
+FreeCallStateService.GetFreeCallToken = {
+  methodName: "GetFreeCallToken",
+  service: FreeCallStateService,
+  requestStream: false,
+  responseStream: false,
+  requestType: state_service_pb.GetFreeCallTokenRequest,
+  responseType: state_service_pb.FreeCallToken
+};
+
 exports.FreeCallStateService = FreeCallStateService;
 
 function FreeCallStateServiceClient(serviceHost, options) {
@@ -86,6 +95,37 @@ FreeCallStateServiceClient.prototype.getFreeCallsAvailable = function getFreeCal
     callback = arguments[1];
   }
   var client = grpc.unary(FreeCallStateService.GetFreeCallsAvailable, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+FreeCallStateServiceClient.prototype.getFreeCallToken = function getFreeCallToken(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(FreeCallStateService.GetFreeCallToken, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
