@@ -1,17 +1,16 @@
 import { isUndefined } from "lodash";
-import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
-import Loader from "../Loader/index.jsx";
-import Table from "../Table/index.jsx";
+
+import { useContext, useState } from "react";
+import { AppContext } from "../../App.jsx";
 import "./styles.css";
 import { getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions.js";
-import { useState } from "react";
+import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
+
+import Table from "../Table/index.jsx";
 
 const ServiceInfo = ({serviceMetadata}) => {
+    const setError = useContext(AppContext);
     const [availableFreeCalls, setAvailibleFreeCalls] = useState();
-
-    if (!serviceMetadata) {
-        return <div className="loader"></div>
-    }
     const metadata = serviceMetadata.metadata;
     const group = serviceMetadata.group;
 
@@ -25,7 +24,12 @@ const ServiceInfo = ({serviceMetadata}) => {
     }
 
     const getAvailableFreeCallsFromSDK = async () => {
-        setAvailibleFreeCalls(await getAvailableFreeCalls(serviceMetadata));
+        try {
+            setAvailibleFreeCalls(await getAvailableFreeCalls(serviceMetadata));
+        } catch(error) {
+            console.error(error);
+            setError(error.message ?? error);
+        }
     }
     
     return (

@@ -20,6 +20,7 @@ export const getTrainingProvider = async (serviceEndpoint, serviceClient) => {
 let isServiceMetadataGetting = false;
 
 export const getServiceMetadata = async (options) => {
+    console.log("getServiceMetadata: start");
     if (isServiceMetadataGetting) {
         return;
     }
