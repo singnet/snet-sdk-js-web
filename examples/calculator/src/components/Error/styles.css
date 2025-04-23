@@ -3,4 +3,10 @@
     background: rgba(211, 4, 4, 0.1);
     border-radius: 8px;
     padding: 12px;
+
+    display: flex;
+    align-items: center;
   }
+.error svg {
+  cursor: pointer;
+}

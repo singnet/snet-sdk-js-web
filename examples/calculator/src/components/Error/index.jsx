@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import "./styles.css";
-import { isEmpty } from "lodash";
+import { ReactComponent as CrossIcon} from "../../assets/images/Cross.svg";
+import { AppContext } from "../../App";
 
-const Error = ({errorMessage}) => {
-    const [isErrorShown, setIsErrorShown] = useState(!isEmpty(errorMessage));
-
-    useEffect(()=>{
-        setIsErrorShown(!isEmpty(errorMessage))
-    }, [errorMessage]);
-
-    if (!isErrorShown) {
-        return null
-    }
-
-    return <div className="error">{errorMessage}</div>
+const Error = ({errorMessage, setError}) => {
+    const setErrorFromContext = useContext(AppContext);
+    const setErrorCallback = setError ?? setErrorFromContext;
+    return errorMessage?
+    <div className="error">
+        {errorMessage}
+        <CrossIcon onClick={() => setErrorCallback()}/>
+    </div> : null;
 }
 
 export default Error;

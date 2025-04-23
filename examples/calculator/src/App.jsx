@@ -1,22 +1,26 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { createContext, Fragment, useEffect, useState } from "react";
 import "./App.css"
 import { getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
-import ServiceDemo from "./components/ServiceDemo";
+
+// import ServiceDemo from "./components/ServiceDemo";
+import ServiceDemo from "./components/ServiceDemo/index_calculator";
+
 import ServiceInfo from "./components/ServiceInfo";
 import WalletInfo from "./components/WalletInfo";
-import { isEmpty } from "lodash";
 import TrainingModel from "./components/TrainingModel";
 import freecallsConfig from "./configs/freecallsConfig";
 import Error from "./components/Error";
 import Loader from "./components/Loader";
 
+export const AppContext = createContext(null);
+
 const ExampleService = () => {
+  const [isServiceMetadataLoading, setIsServiceMetadataLoading] = useState(false);
   const [serviceMetadata, setServiceMetadata] = useState();
   const [serviceClient, setServiceClient] = useState();
   const [serviceClientData, setServiceClientData] = useState();
   const [isClientLoading, setIsClientLoading] = useState(false);
   const [error, setError] = useState();
-  const options = freecallsConfig;
   
   const getServiceClientHandler = async (getServiceClient) => {
     if (isClientLoading) {
@@ -50,27 +54,27 @@ const ExampleService = () => {
 
   useEffect(() => {
     const getServiceMetadataFromSDK =  async () => {
-      setError()
+      if (isServiceMetadataLoading || serviceMetadata) {
+        return;
+      }
       try {
-        if (!isEmpty(serviceMetadata)) {
-          return;
-        }
-        const metadata =  await getServiceMetadata(options);
+        setError()
+        setIsServiceMetadataLoading(true);
+        const metadata =  await getServiceMetadata(freecallsConfig);
         setServiceMetadata(metadata);
       } catch(error) {
         setError(error.message)
+      } finally {
+        setIsServiceMetadataLoading(false);
       }
     }
 
      getServiceMetadataFromSDK();
-  }, [options])
+  }, []);
   
   const LoaderMetadata = () => {
-    if (serviceMetadata || error) {
-      return null
-    }
     return (
-      <Fragment>
+      isServiceMetadataLoading && <Fragment>
         <Loader isLoading={true} />
         <p>Please wait! Service metadata is loading</p>
       </Fragment>
@@ -78,6 +82,7 @@ const ExampleService = () => {
   }
 
     return (
+      <AppContext.Provider value={setError}>
       <div className="service-container">
         <LoaderMetadata />
         {serviceMetadata && <Fragment>
@@ -104,6 +109,7 @@ const ExampleService = () => {
         </Fragment>}
         <Error errorMessage={error} />
       </div>
+      </AppContext.Provider>
     );
 }
 
