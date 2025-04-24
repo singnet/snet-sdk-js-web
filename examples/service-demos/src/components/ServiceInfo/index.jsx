@@ -1,10 +1,10 @@
 import { isUndefined } from "lodash";
 
 import { useContext, useState } from "react";
-import { AppContext } from "../../App.jsx";
+import { AppContext } from "../../AppContext.js";
 import "./styles.css";
 import { getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions.js";
-import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
+import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers.js";
 
 import Table from "../Table/index.jsx";
 
