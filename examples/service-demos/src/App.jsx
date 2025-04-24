@@ -1,9 +1,12 @@
-import React, { createContext, Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./App.css"
 import { getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
+import { AppContext } from "./AppContext";
 
-// import ServiceDemo from "./components/ServiceDemo";
-import ServiceDemo from "./components/ServiceDemo/index_calculator";
+// import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/HateSpeechDetection";
+// import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/Calculator";
+import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/SemyonDev";
+
 
 import ServiceInfo from "./components/ServiceInfo";
 import WalletInfo from "./components/WalletInfo";
@@ -11,8 +14,6 @@ import TrainingModel from "./components/TrainingModel";
 import freecallsConfig from "./configs/freecallsConfig";
 import Error from "./components/Error";
 import Loader from "./components/Loader";
-
-export const AppContext = createContext(null);
 
 const ExampleService = () => {
   const [isServiceMetadataLoading, setIsServiceMetadataLoading] = useState(false);
@@ -28,7 +29,6 @@ const ExampleService = () => {
     }
     setIsClientLoading(true);
     const serviceClient = await getServiceClient(serviceMetadata);
-    console.log("serviceClient: ", serviceClient, serviceClient.constructor.name, serviceClient.paymentChannelManagementStrategy.constructor.name);
     setServiceClientData({name: serviceClient.constructor.name, paymentStrategy: serviceClient.paymentChannelManagementStrategy.constructor.name})
     setServiceClient(serviceClient);
     setIsClientLoading(false);
@@ -54,15 +54,13 @@ const ExampleService = () => {
 
   useEffect(() => {
     const getServiceMetadataFromSDK =  async () => {
-      if (isServiceMetadataLoading || serviceMetadata) {
-        return;
-      }
       try {
         setError()
         setIsServiceMetadataLoading(true);
-        const metadata =  await getServiceMetadata(freecallsConfig);
+        const metadata =  await getServiceMetadata(serviceConfig, freecallsConfig);
         setServiceMetadata(metadata);
       } catch(error) {
+        console.error(error);
         setError(error.message)
       } finally {
         setIsServiceMetadataLoading(false);

@@ -63,7 +63,6 @@ class WebSdk extends SnetSDK {
             serviceId,
             groupName
         );
-
         return new ServiceMetadataProviderWeb(
             this.account,
             orgId,

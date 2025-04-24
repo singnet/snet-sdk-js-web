@@ -1,9 +1,10 @@
 import { useState, Fragment, useContext } from "react";
-import { Calculator } from "../../stubs/example_pb_service.js";
-import Error from "../Error/index.jsx";
-import "./styles.css";
-import Loader from "../Loader/index.jsx";
-import { AppContext } from "../../App.jsx";
+import { Calculator } from "../../../stubs/example_pb_service.js";
+import Error from "../../Error/index.jsx";
+import "../common/styles.css";
+import Loader from "../../Loader/index.jsx";
+
+export {default as serviceConfig} from "./serviceConfig";
 
 const ACTIONS = [
     {value: "add", title: "+"},

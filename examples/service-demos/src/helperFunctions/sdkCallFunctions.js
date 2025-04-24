@@ -1,4 +1,3 @@
-import serviceConfig from '../configs/serviceConfig';
 import { initSDK } from '../configs/sdkConfig';
 import {
     PrepaidPaymentStrategy,
@@ -17,14 +16,7 @@ export const getTrainingProvider = async (serviceEndpoint, serviceClient) => {
     return trainingProvider;
 };
 
-let isServiceMetadataGetting = false;
-
-export const getServiceMetadata = async (options) => {
-    console.log("getServiceMetadata: start");
-    if (isServiceMetadataGetting) {
-        return;
-    }
-    isServiceMetadataGetting = true;
+export const getServiceMetadata = async (serviceConfig, options) => {
     const sdk = await getSDK();
     const serviceMetadata = await sdk.createServiceMetadataProvider(
         serviceConfig.orgID,
@@ -32,7 +24,6 @@ export const getServiceMetadata = async (options) => {
         undefined,
         options
     );
-    isServiceMetadataGetting = false;
     return serviceMetadata;
 };
 
