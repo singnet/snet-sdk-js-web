@@ -1,8 +1,10 @@
-import { useState, Fragment } from "react";
-import { Calculator } from "../../stubs/example_pb_service.js";
-import Error from "../Error/index.jsx";
-import "./styles.css";
-import Loader from "../Loader/index.jsx";
+import { useState, Fragment, useContext } from "react";
+import { Calculator } from "../../../stubs/example_pb_service.js";
+import Error from "../../Error/index.jsx";
+import "../common/styles.css";
+import Loader from "../../Loader/index.jsx";
+
+export {default as serviceConfig} from "./serviceConfig";
 
 const ACTIONS = [
     {value: "add", title: "+"},
@@ -50,10 +52,12 @@ const ServiceDemo = ({serviceClient}) => {
                 preventCloseServiceOnEnd: false,
                 onEnd: onActionEnd,
             };
-            serviceClient.unary(methodDescriptor, props);
-        } catch (err) {
+            await serviceClient.unary(methodDescriptor, props);
+        } catch (error) {
+            console.error(error);
+            setError(error.message ?? error);
+        } finally {
             setIsLoading(false);
-            setError(err.message)
         }
       }
     
@@ -86,8 +90,8 @@ const ServiceDemo = ({serviceClient}) => {
             >
                 Submit
             </button>
-            <Error errorMessage={error} />
-            <Loader isLoading={isLoading && !error} />
+            <Error errorMessage={error} setError={setError}/>
+            <Loader isLoading={isLoading} />
             {isSubmitCompleted && !error && <div className="service-output">
                 Response: {values.firstValue} {selectedAction.title} {values.secondValue} = {response}
             </div>
