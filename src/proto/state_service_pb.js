@@ -847,9 +847,7 @@ proto.escrow.GetFreeCallTokenRequest.prototype.toObject = function(opt_includeIn
  */
 proto.escrow.GetFreeCallTokenRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    groupId: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    orgId: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    address: jspb.Message.getFieldWithDefault(msg, 4, "")
+    address: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -888,14 +886,6 @@ proto.escrow.GetFreeCallTokenRequest.deserializeBinaryFromReader = function(msg,
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setGroupId(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setOrgId(value);
-      break;
-    case 4:
-      var value = /** @type {string} */ (reader.readString());
       msg.setAddress(value);
       break;
     default:
@@ -927,24 +917,10 @@ proto.escrow.GetFreeCallTokenRequest.prototype.serializeBinary = function() {
  */
 proto.escrow.GetFreeCallTokenRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getGroupId();
-  if (f.length > 0) {
-    writer.writeString(
-      1,
-      f
-    );
-  }
-  f = message.getOrgId();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
   f = message.getAddress();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      1,
       f
     );
   }
@@ -952,10 +928,10 @@ proto.escrow.GetFreeCallTokenRequest.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional string group_id = 1;
+ * optional string address = 1;
  * @return {string}
  */
-proto.escrow.GetFreeCallTokenRequest.prototype.getGroupId = function() {
+proto.escrow.GetFreeCallTokenRequest.prototype.getAddress = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -964,44 +940,8 @@ proto.escrow.GetFreeCallTokenRequest.prototype.getGroupId = function() {
  * @param {string} value
  * @return {!proto.escrow.GetFreeCallTokenRequest} returns this
  */
-proto.escrow.GetFreeCallTokenRequest.prototype.setGroupId = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional string org_id = 3;
- * @return {string}
- */
-proto.escrow.GetFreeCallTokenRequest.prototype.getOrgId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.escrow.GetFreeCallTokenRequest} returns this
- */
-proto.escrow.GetFreeCallTokenRequest.prototype.setOrgId = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional string address = 4;
- * @return {string}
- */
-proto.escrow.GetFreeCallTokenRequest.prototype.getAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.escrow.GetFreeCallTokenRequest} returns this
- */
 proto.escrow.GetFreeCallTokenRequest.prototype.setAddress = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -1037,10 +977,9 @@ proto.escrow.FreeCallToken.prototype.toObject = function(opt_includeInstance) {
  */
 proto.escrow.FreeCallToken.toObject = function(includeInstance, msg) {
   var f, obj = {
-    tokenBase64: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    tokenHex: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    tokenHex: jspb.Message.getFieldWithDefault(msg, 1, ""),
     token: msg.getToken_asB64(),
-    tokenExpirationBlock: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    tokenExpirationBlock: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1079,17 +1018,13 @@ proto.escrow.FreeCallToken.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTokenBase64(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
       msg.setTokenHex(value);
       break;
-    case 3:
+    case 2:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setToken(value);
       break;
-    case 4:
+    case 3:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setTokenExpirationBlock(value);
       break;
@@ -1122,31 +1057,24 @@ proto.escrow.FreeCallToken.prototype.serializeBinary = function() {
  */
 proto.escrow.FreeCallToken.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getTokenBase64();
+  f = message.getTokenHex();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getTokenHex();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
   f = message.getToken_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      3,
+      2,
       f
     );
   }
   f = message.getTokenExpirationBlock();
   if (f !== 0) {
     writer.writeUint64(
-      4,
+      3,
       f
     );
   }
@@ -1154,10 +1082,10 @@ proto.escrow.FreeCallToken.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string token_base64 = 1;
+ * optional string token_hex = 1;
  * @return {string}
  */
-proto.escrow.FreeCallToken.prototype.getTokenBase64 = function() {
+proto.escrow.FreeCallToken.prototype.getTokenHex = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -1166,40 +1094,22 @@ proto.escrow.FreeCallToken.prototype.getTokenBase64 = function() {
  * @param {string} value
  * @return {!proto.escrow.FreeCallToken} returns this
  */
-proto.escrow.FreeCallToken.prototype.setTokenBase64 = function(value) {
+proto.escrow.FreeCallToken.prototype.setTokenHex = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string token_hex = 2;
- * @return {string}
- */
-proto.escrow.FreeCallToken.prototype.getTokenHex = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.escrow.FreeCallToken} returns this
- */
-proto.escrow.FreeCallToken.prototype.setTokenHex = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional bytes token = 3;
+ * optional bytes token = 2;
  * @return {!(string|Uint8Array)}
  */
 proto.escrow.FreeCallToken.prototype.getToken = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /**
- * optional bytes token = 3;
+ * optional bytes token = 2;
  * This is a type-conversion wrapper around `getToken()`
  * @return {string}
  */
@@ -1210,7 +1120,7 @@ proto.escrow.FreeCallToken.prototype.getToken_asB64 = function() {
 
 
 /**
- * optional bytes token = 3;
+ * optional bytes token = 2;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getToken()`
@@ -1227,16 +1137,16 @@ proto.escrow.FreeCallToken.prototype.getToken_asU8 = function() {
  * @return {!proto.escrow.FreeCallToken} returns this
  */
 proto.escrow.FreeCallToken.prototype.setToken = function(value) {
-  return jspb.Message.setProto3BytesField(this, 3, value);
+  return jspb.Message.setProto3BytesField(this, 2, value);
 };
 
 
 /**
- * optional uint64 token_expiration_block = 4;
+ * optional uint64 token_expiration_block = 3;
  * @return {number}
  */
 proto.escrow.FreeCallToken.prototype.getTokenExpirationBlock = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
@@ -1245,7 +1155,7 @@ proto.escrow.FreeCallToken.prototype.getTokenExpirationBlock = function() {
  * @return {!proto.escrow.FreeCallToken} returns this
  */
 proto.escrow.FreeCallToken.prototype.setTokenExpirationBlock = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
@@ -1579,8 +1489,7 @@ proto.escrow.FreeCallStateReply.prototype.toObject = function(opt_includeInstanc
  */
 proto.escrow.FreeCallStateReply.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    freeCallsAvailable: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    freeCallsAvailable: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -1618,10 +1527,6 @@ proto.escrow.FreeCallStateReply.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUserAddress(value);
-      break;
-    case 2:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setFreeCallsAvailable(value);
       break;
@@ -1654,47 +1559,22 @@ proto.escrow.FreeCallStateReply.prototype.serializeBinary = function() {
  */
 proto.escrow.FreeCallStateReply.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserAddress();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getFreeCallsAvailable();
+  if (f !== 0) {
+    writer.writeUint64(
       1,
       f
     );
   }
-  f = message.getFreeCallsAvailable();
-  if (f !== 0) {
-    writer.writeUint64(
-      2,
-      f
-    );
-  }
 };
 
 
 /**
- * optional string user_address = 1;
- * @return {string}
- */
-proto.escrow.FreeCallStateReply.prototype.getUserAddress = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.escrow.FreeCallStateReply} returns this
- */
-proto.escrow.FreeCallStateReply.prototype.setUserAddress = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional uint64 free_calls_available = 2;
+ * optional uint64 free_calls_available = 1;
  * @return {number}
  */
 proto.escrow.FreeCallStateReply.prototype.getFreeCallsAvailable = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
@@ -1703,7 +1583,7 @@ proto.escrow.FreeCallStateReply.prototype.getFreeCallsAvailable = function() {
  * @return {!proto.escrow.FreeCallStateReply} returns this
  */
 proto.escrow.FreeCallStateReply.prototype.setFreeCallsAvailable = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
