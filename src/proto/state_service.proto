@@ -69,17 +69,14 @@ service FreeCallStateService {
 }
 
 message GetFreeCallTokenRequest{
-  string group_id = 1;
-  //  string service_id = 2;
-  string org_id = 3;
-  string address = 4;
+  string address = 1;
 }
 
 message FreeCallToken{
-  string token_base64 = 1;
-  string token_hex = 2;
-  bytes token = 3;
-  uint64 token_expiration_block = 4;
+  // token_hex == token but just in another format
+  string token_hex = 1;
+  bytes token = 2;
+  uint64 token_expiration_block = 3;
 }
 
 message FreeCallStateRequest {
@@ -90,15 +87,14 @@ message FreeCallStateRequest {
   //Token expiration date in Block number
   uint64 token_expiry_date_block = 3;
   //Signature is made up of the below, user signs with the private key corresponding with the public key used to generate the authorized token
-  //free-call-metadata = ("__prefix_free_trial",user_id,organization_id,service_id,group_id,current_block,authorized_token)
+  //free-call-metadata = ("__prefix_free_trial",user_address ,organization_id,service_id,group_id,current_block,authorized_token)
   bytes signature = 4;
   //current block number (signature will be valid only for short time around this block number)
   uint64 current_block = 5;
 }
 
 message FreeCallStateReply {
-  string user_address = 1;
   // number of free calls available
-  uint64 free_calls_available = 2;
+  uint64 free_calls_available = 1;
 }
 
