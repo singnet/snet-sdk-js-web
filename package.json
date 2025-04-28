@@ -33,7 +33,7 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "lodash": "latest",
     "loglevel": "^1.9.2",
-    "singularitynet-platform-contracts": "^1.0.4",
+    "singularitynet-platform-contracts": "2.0.2",
     "snet-sdk-core": "file:../snet-sdk-core/dist",
     "web3": "^4.4.0"
   },
