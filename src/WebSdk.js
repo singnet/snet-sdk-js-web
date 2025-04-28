@@ -16,7 +16,9 @@ class WebSdk extends SnetSDK {
         super(config, metadataProvider);
         this._registryContract = new RegistryContract(
             this._web3,
-            this._networkId
+            this._networkId,
+            this._config.tokenName,
+            this._config.standType
         );
     }
 

@@ -6,11 +6,11 @@ class RegistryContract {
      * @param {Web3} web3
      * @param {number} networkId
      */
-    constructor(web3, networkId) {
+    constructor(web3, networkId, tokenName, standName) {
         this._web3 = web3;
         this._contract = new this._web3.eth.Contract(
             RegistryAbi,
-            RegistryNetworks[networkId].address
+            RegistryNetworks[networkId][tokenName][standName].address
         );
     }
 

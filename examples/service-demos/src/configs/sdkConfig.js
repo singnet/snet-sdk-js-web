@@ -49,6 +49,8 @@ const updateSDK = async () => {
         web3Provider,
         defaultGasPrice: '4700000',
         defaultGasLimit: '210000',
+        tokenName: 'FET',
+        standType: 'demo'
     };
     sdk = new SnetSDK(snetConfig);
 };
