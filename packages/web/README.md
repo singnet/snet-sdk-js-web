@@ -90,20 +90,31 @@ You can find a sample config below
 
 ```json
 {
-  "web3Provider": window.web3.currentProvider,
+  "web3Provider": "WEB_3_PROVIDER",
   "networkId": "11155111",
-  "ipfsEndpoint": "http://ipfs.organization.io:80",
+  "ipfsEndpoint": "https://ipfs.singularitynet.io:443",
   "defaultGasPrice": "4700000",
   "defaultGasLimit": "210000",
-  "rpcEndpoint": "https://ropsten.infura.io/v3/1234567890",
   "tokenName": "FET",
-  "standType": "demo"
+  "standType": "demo",
+  "logLevel": "info",
 }
 
 ```
-**Note** The `tokenName` can assume the values `FET` and `AGIX`.
 
-**Note** The `standType` attribute for test networks can assume the values `demo`, `dev`, and for Mainnet, it can take on the values `prod`.
+| **Key**            | **Description**                                                                           |
+|--------------------|-------------------------------------------------------------------------------------------|
+| `web3Provider`     | The URL of the Web3 provider, used to interact with the Ethereum network.|
+| `networkId`        | The ID of the Ethereum network to connect to. (1 for Mainnet or 11155111 for Sepolia)|
+| `ipfsEndpoint`     | The endpoint for connecting to an SingularityNet IPFS node|
+| `defaultGasPrice`  | The gas price (in wei) to be used for transactions.|
+| `defaultGasLimit`  | The gas limit to be set for transactions.|
+| `logLevel`  | Can be `debug`, `info` or `error`|
+| `tokenName`  | The name of the token which will be used. It can assume the values `FET` and `AGIX`. |
+| `standType`  | This attribute for test networks can assume the values `demo`, `dev`, and for Mainnet, it can take on the values `prod` |
+| `rpcEndpoint`  | Is optional, you should provide this if you are getting block size limit exceeded error. This is usually happens when you are using any web social auth providers.
+|
+
 
 **Note:** `rpcEndpoint` is optional, you should provide this if you are getting block size limit exceeded error. This is usually happens when you are using any web social auth providers.
 
@@ -118,7 +129,6 @@ The api to invoke gRPC methods against a service is similar to that of the `gRPC
 ```javascript
 
 import { <ServiceName> } from  '<path_to_grpc_service_file>'
-
 import { <Message> } from  '<path_to_grpc_message_file>'
 
 const  client = sdk.createServiceClient("<org_id>", "<service_id>")
