@@ -1,6 +1,6 @@
 import TrainingProvider from 'snet-sdk-core/training/TrainingProvider';
 import { TrainingModelProvider } from '../ModelsProvider';
-import PaidCallPaymentStrategyWeb from '../payment_strategies/PaidCallPaymentStrategy';
+import PaidCallPaymentStrategyWeb from '../paymentStrategies/PaidCallPaymentStrategy';
 import { grpc } from '@improbable-eng/grpc-web';
 
 class TrainingProviderWeb extends TrainingProvider {

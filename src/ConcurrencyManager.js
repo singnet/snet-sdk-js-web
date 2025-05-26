@@ -1,4 +1,4 @@
-import { toBNString } from 'snet-sdk-core/utils/bignumber_helper';
+import { toBNString } from 'snet-sdk-core/utils/bignumberHelper';
 import {
     TokenService,
     TokenServiceClient,
