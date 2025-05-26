@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ReactComponent as FilterIcon } from "../../../assets/images/FilterIcon.svg"
-import { serviceStatus } from 'snet-sdk-core/constants/TrainingConstants';
+import { serviceStatus } from 'snet-sdk-core/training/TrainingConstants';
 import './styles.css';
 import PopUp from '../../PopUp';
 
