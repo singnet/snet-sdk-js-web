@@ -43,7 +43,7 @@ button:hover {
 
 .service-container {
   margin: 0 auto;
-  padding: 30px;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   gap: 20px;
