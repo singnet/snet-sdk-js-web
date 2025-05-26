@@ -1,6 +1,6 @@
 import PrepaidPaymentStrategy from './PrepaidPaymentStrategy';
 import PaidCallPaymentStrategy from './PaidCallPaymentStrategy';
-import DefaultPaymentStrategy from 'snet-sdk-core/payment_strategies/DefaultPaymentStrategy';
+import DefaultPaymentStrategy from 'snet-sdk-core/paymentStrategies/DefaultPaymentStrategy';
 import FreeCallPaymentStrategyWeb from './FreeCallPaymentStrategy';
 
 class DefaultPaymentStrategyWeb extends DefaultPaymentStrategy {

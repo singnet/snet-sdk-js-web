@@ -1,6 +1,6 @@
 import WebSdk from './WebSdk';
 
 export * from 'snet-sdk-core';
-export * from './payment_strategies';
+export * from './paymentStrategies';
 
 export default WebSdk;
