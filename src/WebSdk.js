@@ -88,7 +88,7 @@ class WebSdk extends SnetSDK {
      * @returns {WalletRPCIdentity}
      */
     _createIdentity() {
-        return new WalletRPCIdentity(this._config, this._web3);
+        return new WalletRPCIdentity(this._networkId);
     }
 
     /**
