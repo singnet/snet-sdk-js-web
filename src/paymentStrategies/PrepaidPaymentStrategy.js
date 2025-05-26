@@ -1,4 +1,4 @@
-import PrepaidPaymentStrategy from 'snet-sdk-core/payment_strategies/PrepaidPaymentStrategy';
+import PrepaidPaymentStrategy from 'snet-sdk-core/paymentStrategies/PrepaidPaymentStrategy';
 import { PrepaidMetadataGenerator } from 'snet-sdk-core/utils/metadataUtils';
 
 class PrepaidPaymentStrategyWeb extends PrepaidPaymentStrategy {

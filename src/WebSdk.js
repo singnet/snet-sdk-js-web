@@ -1,7 +1,7 @@
 import SnetSDK from 'snet-sdk-core';
 import WebServiceClient from './WebServiceClient';
 import RegistryContract from './RegistryContract';
-import { DefaultPaymentStrategy } from './payment_strategies';
+import { DefaultPaymentStrategy } from './paymentStrategies';
 import ServiceMetadataProviderWeb from './ServiceMetadataProvider';
 import { isEmpty } from 'lodash';
 import TrainingProviderWeb from './training/TrainingProvider';
