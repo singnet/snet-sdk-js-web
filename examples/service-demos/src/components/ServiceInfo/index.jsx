@@ -43,7 +43,7 @@ const ServiceInfo = ({serviceMetadata}) => {
                 <h2>{orgMetadata.org_name}</h2>
                 <p>short description: {short_description}</p>
                 <p>description: {description}</p>
-                <p>contacts: {orgMetadata.contacts[1].email}</p>
+                <p>contacts: {orgMetadata?.contacts[1]?.email}</p>
             </div>
         )
     }
