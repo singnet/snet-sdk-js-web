@@ -1,15 +1,13 @@
 import { isUndefined } from "lodash";
 import { logMessage } from "snet-sdk-core/utils/logger";
 import Web3 from "web3";
+import { EVENT_ACCOUNT_CHANGED, EVENT_NETWORK_CHANGED, ON_ACCOUNT_CHANGE, ON_NETWORK_CHANGE } from "../constants/BlockchainConstants";
 
 const ethereumMethods = {
   REQUEST_ACCOUNTS: 'eth_requestAccounts',
   REQUEST_CHAIN_ID: 'eth_chainId',
   REQUEST_SWITCH_CHAIN: 'wallet_switchEthereumChain'
 };
-
-export const ON_ACCOUNT_CHANGE = "accountsChanged";
-export const ON_NETWORK_CHANGE = "chainChanged";
 
 /**
  * @implements Identity
@@ -150,7 +148,7 @@ class WalletRPCIdentity {
   addListenersForWeb3 = () => {
     this._web3.addListener(ON_ACCOUNT_CHANGE, async accounts => {
       this.getAddress();
-      const event = new CustomEvent("snetMMAccountChanged", {
+      const event = new CustomEvent(EVENT_ACCOUNT_CHANGED, {
         bubbles: true,
         details: accounts[0]
       });
@@ -158,7 +156,7 @@ class WalletRPCIdentity {
     });
     this._web3.addListener(ON_NETWORK_CHANGE, network => {
       this.switchNetwork();
-      const event = new CustomEvent("snetMMNetworkChanged", {
+      const event = new CustomEvent(EVENT_NETWORK_CHANGED, {
         detail: {
           network
         }
