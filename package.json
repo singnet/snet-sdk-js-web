@@ -6,7 +6,7 @@
   "files": [
     "dist"
   ],
-    "exports": {
+  "exports": {
     ".": "./dist/index.js",
     "./constants/*": "./dist/constants/*.js",
     "./constants": "./dist/constants/index.js",

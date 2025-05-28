@@ -35,8 +35,9 @@ async createServiceClient({
     orgId, 
     serviceId, 
     paymentStrategy = this._constructStrategy(),
-    serviceMetadataProvider = null
-} = {}) {
+    serviceMetadataProvider = null,
+    options = {}
+}) {
     // Validate required parameters
     if ((!orgId || !serviceId) && !serviceMetadataProvider) {
         throw new Error("orgId and serviceId are required parameters if serviceMetadataProvider isn't provided");
@@ -48,7 +49,8 @@ async createServiceClient({
             serviceMetadataProvider = await this.createServiceMetadataProvider(
                 orgId, 
                 serviceId,
-                typeof serviceMetadataProvider === 'string' ? serviceMetadataProvider : undefined
+                "default_group",
+                options
             );
         } catch (error) {
             throw new Error(`Failed to create metadata provider: ${error.message}`);
