@@ -6,10 +6,11 @@ class WebServiceClient {
      * @param {ServiceMetadataProviderWeb} metadataProvider
      * @param {DefaultPaymentStrategyWeb || FreeCallPaymentStrategyWeb || PaidCallPaymentStrategyWeb || PrepaidPaymentStrategyWeb} paymentChannelManagementStrategy
      */
-    constructor(metadataProvider, paymentChannelManagementStrategy) {
+    constructor(metadataProvider, paymentChannelManagementStrategy, options) {
         this.metadataProvider = metadataProvider;
         this.paymentChannelManagementStrategy =
             paymentChannelManagementStrategy;
+        this._options = {...options, ...metadataProvider?._options};
     }
 
     /**

@@ -1,5 +1,5 @@
 h2, h3, p {
-    margin: 0;
+    margin: 0 !important;
 }
 
 p {
@@ -34,7 +34,8 @@ p {
 }
 
 .service-image-container {
-    max-height: 200px;
+    max-height: 100px;
+    max-width: 100px;
 }
 
 .service-image-container img{
@@ -51,6 +52,15 @@ p {
 .pricing-info-table td{
     min-width: 150px;
     text-align: left;
+}
+
+.info-card {
+    width: 60%;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(3px);
+    box-shadow: 0 0 1px var(--accent-color);
 }
 
 @media(max-width: 768px) {

@@ -4,22 +4,26 @@ import { useContext, useState } from "react";
 import { AppContext } from "../../AppContext.js";
 import "./styles.css";
 import { getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions.js";
-import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers.js";
 
 import Table from "../Table/index.jsx";
+import { cogsToToken } from "snet-sdk-core/utils/tokenUtils";
+import { TOKEN_NAME } from "../../configs/sdkConfig.js";
 
 const ServiceInfo = ({serviceMetadata}) => {
     const setError = useContext(AppContext);
     const [availableFreeCalls, setAvailibleFreeCalls] = useState();
-    const metadata = serviceMetadata.metadata;
+    
+    const metadata = serviceMetadata.serviceMetadata;
+    const orgMetadata = serviceMetadata._orgMetadata;
     const group = serviceMetadata.group;
+    
 
     const generatePriceInfoMeta = (priceInfo) => {
         return [
             { title: "free calls", value: group.free_calls},
             { title: "pricing model", value: priceInfo.price_model },
             { title: "is default", value: String(priceInfo.default) },
-            { title: "price", value: cogsToAgix(priceInfo.price_in_cogs) + " " + tokenName }
+            { title: "price", value: cogsToToken(priceInfo.price_in_cogs, TOKEN_NAME) + " " + TOKEN_NAME }
         ]
     }
 
@@ -32,9 +36,22 @@ const ServiceInfo = ({serviceMetadata}) => {
         }
     }
     
+    const OrgMetadata = () => {
+        const {description, short_description } = orgMetadata.description;
+        return (
+            <div className="info-card">
+                <h2>{orgMetadata.org_name}</h2>
+                <p>short description: {short_description}</p>
+                <p>description: {description}</p>
+                <p>contacts: {orgMetadata?.contacts[1]?.email}</p>
+            </div>
+        )
+    }
+
     return (
         <div className="service-info-container">
-            <div className="main-service-info-container">
+            <OrgMetadata />
+            <div className="main-service-info-container info-card">
                 {metadata.media.map(image =>
                     <div key={image.url} className="service-image-container">
                         <img src={image.url} alt={image.altText} />
@@ -49,7 +66,7 @@ const ServiceInfo = ({serviceMetadata}) => {
             <h2>Service groups:</h2>
             <div className="groups-container">
                 {metadata.groups.map((group) => (
-                    <div key={group.group_id} className="group">
+                    <div key={group.group_id} className="group info-card">
                         <h3>{group.group_name}</h3>
                         {group.pricing.map(price =>{
                             const priceInfoMeta = generatePriceInfoMeta(price);

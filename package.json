@@ -6,6 +6,24 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./constants/*": "./dist/constants/*.js",
+    "./constants": "./dist/constants/index.js",
+
+    "./paymentStrategies": "./dist/paymentStrategies/inedx.js",
+    "./paymentStrategies/DefaultPaymentStrategy": "./dist/paymentStrategies/DefaultPaymentStrategy.js",
+    "./paymentStrategies/BasePaidPaymentStrategy": "./dist/paymentStrategies/BasePaidPaymentStrategy.js",
+    "./paymentStrategies/FreeCallPaymentStrategy": "./dist/paymentStrategies/FreeCallPaymentStrategy.js",
+    "./paymentStrategies/PaidCallPaymentStrategy": "./dist/paymentStrategies/PaidCallPaymentStrategy.js",
+    "./paymentStrategies/PrepaidPaymentStrategy": "./dist/paymentStrategies/PrepaidPaymentStrategy.js",
+
+    "./training/TrainingProvider": "./dist/training/TrainingProvider.js",
+    "./training/TrainingConstants": "./dist/training/TrainingConstants.js",
+    "./utils/*": "./dist/utils/index.js",
+    "./utils/logger": "./dist/utils/index.js",
+    "./utils/tokenUtils": "./dist/utils/index.js"
+  },
   "keywords": [
     "snet-sdk",
     "singularitynet-sdk",
@@ -33,8 +51,8 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "lodash": "latest",
     "loglevel": "^1.9.2",
-    "singularitynet-platform-contracts": "^1.0.4",
-    "snet-sdk-core": "file:../snet-sdk-core/dist",
+    "singularitynet-platform-contracts": "2.1.0",
+    "snet-sdk-core": "0.1.4",
     "web3": "^4.4.0"
   },
   "browser": {

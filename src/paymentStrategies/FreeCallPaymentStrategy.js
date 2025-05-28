@@ -2,7 +2,7 @@ import {
     FreeCallStateServiceClient,
     FreeCallStateService,
 } from '../proto/state_service_pb_service';
-import FreeCallPaymentStrategy from 'snet-sdk-core/payment_strategies/FreeCallPaymentStrategy';
+import FreeCallPaymentStrategy from 'snet-sdk-core/paymentStrategies/FreeCallPaymentStrategy';
 
 class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
     /**
@@ -28,9 +28,7 @@ class FreeCallPaymentStrategyWeb extends FreeCallPaymentStrategy {
      */
     _generateFreeCallStateServiceClient() {
         const serviceEndpoint = this._serviceMetadata._getServiceEndpoint();
-        let host = serviceEndpoint.origin;
-
-        return new FreeCallStateServiceClient(host);
+        return new FreeCallStateServiceClient(serviceEndpoint.origin);
     }
 
     /**

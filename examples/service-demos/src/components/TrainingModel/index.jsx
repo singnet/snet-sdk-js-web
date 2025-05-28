@@ -23,7 +23,7 @@ const TrainingModel = ({ serviceMetadata, serviceClient }) => {
         data: ''
     });
 
-    const serviceEndpoint = serviceMetadata?._getServiceEndpoint();//new URL("https://3f61-185-167-96-119.ngrok-free.app") //serviceMetadata?._getServiceEndpoint(); TODO
+    const serviceEndpoint = serviceMetadata?._getServiceEndpoint();
 
     const closeMethadataPopUp = () => {
         setMethodMetadata({...methodMetadata, isOpen: false})

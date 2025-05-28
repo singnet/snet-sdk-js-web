@@ -1,0 +1,7 @@
+.content-box {
+    margin-bottom: 15px;
+}
+
+.content-box .MuiSelect-select {
+    min-width: 200px;
+}

@@ -5,7 +5,8 @@ import { AppContext } from "./AppContext";
 
 // import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/HateSpeechDetection";
 // import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/Calculator";
-import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/SemyonDev";
+// import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/SemyonDev";
+import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/TossSER_FreeTrain";
 
 
 import ServiceInfo from "./components/ServiceInfo";
@@ -27,11 +28,16 @@ const ExampleService = () => {
     if (isClientLoading) {
       return;
     }
-    setIsClientLoading(true);
-    const serviceClient = await getServiceClient(serviceMetadata);
-    setServiceClientData({name: serviceClient.constructor.name, paymentStrategy: serviceClient.paymentChannelManagementStrategy.constructor.name})
-    setServiceClient(serviceClient);
-    setIsClientLoading(false);
+    try {
+      setIsClientLoading(true);
+      const serviceClient = await getServiceClient(serviceMetadata);
+      setServiceClientData({name: serviceClient.constructor.name, paymentStrategy: serviceClient.paymentChannelManagementStrategy.constructor.name})
+      setServiceClient(serviceClient);
+    } catch(err) {
+      console.error(err); 
+    } finally {
+      setIsClientLoading(false);
+    }
   }
 
   const serviceClientButtons = [
@@ -57,7 +63,7 @@ const ExampleService = () => {
       try {
         setError()
         setIsServiceMetadataLoading(true);
-        const metadata =  await getServiceMetadata(serviceConfig, freecallsConfig);
+        const metadata =  await getServiceMetadata(serviceConfig, freecallsConfig);  
         setServiceMetadata(metadata);
       } catch(error) {
         console.error(error);
@@ -98,6 +104,7 @@ const ExampleService = () => {
               </button>
             )}
           </div>
+            <Loader isLoading={isClientLoading} />
         </Fragment>}
         {serviceClient && <Fragment>
           <p>Service client name: {serviceClientData?.name}</p>

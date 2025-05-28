@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { getWalletInfo } from "../../helperFunctions/sdkCallFunctions";
-import { cogsToAgix, tokenName } from "../../helperFunctions/priceHelpers";
 import "./styles.css";
 import Loader from "../Loader";
 import Table from "../Table";
 import Error from "../Error";
 import PopUp from "../PopUp";
+import { cogsToToken } from "snet-sdk-core/utils/tokenUtils";
+import { TOKEN_NAME } from "../../configs/sdkConfig";
 
 const WalletInfo = () => {
     const [address, setAddress] = useState('');
@@ -22,7 +23,7 @@ const WalletInfo = () => {
             setIsLoading(true);
             const {address, balance, transactionCount} = await getWalletInfo();
             setAddress(address);
-            setBalance(cogsToAgix(balance))
+            setBalance(cogsToToken(balance, TOKEN_NAME))
             setTransactionCount(transactionCount);
         } catch(error) {
             setError(error.message)
@@ -33,7 +34,7 @@ const WalletInfo = () => {
 
     const walletInfoMeta = [
         { title: "address", value: address },
-        { title: "balance", value: balance + " " + tokenName },
+        { title: "balance", value: balance + " " + TOKEN_NAME },
         { title: "transactions", value: transactionCount },
     ]
 

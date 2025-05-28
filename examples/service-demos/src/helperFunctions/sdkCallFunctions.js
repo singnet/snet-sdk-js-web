@@ -2,7 +2,7 @@ import { initSDK } from '../configs/sdkConfig';
 import {
     PrepaidPaymentStrategy,
     FreeCallPaymentStrategy,
-} from 'snet-sdk-web/payment_strategies';
+} from 'snet-sdk-web/paymentStrategies';
 
 let sdk;
 
@@ -29,10 +29,10 @@ export const getServiceMetadata = async (serviceConfig, options) => {
 
 const getServiceClient = async (serviceMetadataProvider, paymentStrategy) => {
     const sdk = await getSDK();
-    const client = await sdk.createServiceClient(
+    const client = await sdk.createServiceClient({
         serviceMetadataProvider,
         paymentStrategy
-    );
+    });
     return client;
 };
 
