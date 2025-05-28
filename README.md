@@ -5,6 +5,13 @@
 SingularityNET SDK for Browser (Web)
 
 ## Getting Started
+This package snet-sdk-web provides browser-compatible tools for interacting with the SNET SDK. It is built on top of the snet-sdk-core, extending its functionality to support web-specific environments.
+
+The SNET JS SDK consists of three packages:
+
+- `core` – The main SDK functionality.
+- `nodeJS` – Node.js-specific implementations.
+- **`web` – Web (browser) integrations.**
 
 These instructions are for the development and use of the SingularityNET SDK for JavaScript on web platform like browsers.
 
@@ -14,9 +21,13 @@ These instructions are for the development and use of the SingularityNET SDK for
 npm install snet-sdk-web
 ```
 
-**Note:** This SDK requires Node.js version 18 or higher and `react-scripts` version 5.0.1 or higher for optimal functionality and compatibility.
+| Enviroment | Version |
+| -------| --------------- |
+| Node.js | >= 18  |
+| react-scripts | >= 5.0.1  |
 
-If you are using `create-react-app` then require Node.js polyfills for browser compatibility, To add these polyfills, you can use the `config-overrides.js` file with `react-app-rewired`. This approach allows you to customize the Webpack configuration without ejecting from `create-react-app`.
+
+If you are using `create-react-app` then require Node.js polyfills for browser compatibility. To add these polyfills, you can use the `config-overrides.js` file with `react-app-rewired`. This approach allows you to customize the Webpack configuration without ejecting from `create-react-app`.
 
 Install **react-app-rewired** into your application
 
@@ -38,8 +49,10 @@ const webpack = require("webpack");
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
-    os: require.resolve("os-browserify"),
-    url: require.resolve("url"),
+    os: require.resolve('os-browserify'),
+    url: require.resolve('url'),
+    path: require.resolve('path-browserify'),
+    fs: require.resolve('fs'),
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
@@ -80,7 +93,6 @@ The SingularityNET SDK allows you to import compiled client libraries for your s
 
 ```javascript
 import SnetSDK from "snet-sdk-web";
-
 import config from "./config";
 
 const sdk = new SnetSDK(config);
@@ -90,17 +102,29 @@ You can find a sample config below
 
 ```json
 {
-  "web3Provider": window.web3.currentProvider,
-  "networkId": "3",
+  "web3Provider": window.ethereum,
+  "networkId": "11155111",
   "ipfsEndpoint": "http://ipfs.organization.io:80",
   "defaultGasPrice": "4700000",
   "defaultGasLimit": "210000",
-  "rpcEndpoint": "https://ropsten.infura.io/v3/1234567890"
+  "tokenName": "FET",
 }
 
 ```
 
-**Note:** `rpcEndpoint` is optional, you should provide this if you are getting block size limit exceeded error. This is usually happens when you are using any web social auth providers.
+All config fields:
+| **Key**            | **Description**                                                                           |
+|--------------------|-------------------------------------------------------------------------------------------|
+| `web3Provider`     | The URL of the Web3 provider, used to interact with the Ethereum network.|
+| `privateKey`       | The private key of the Ethereum account used for signing transactions. Must start with 0x |
+| `networkId`        | The ID of the Ethereum network to connect to. (1 for Mainnet or 11155111 for Sepolia)|
+| `ipfsEndpoint`     | The optional parameter. The endpoint for connecting to an SingularityNet IPFS node|
+| `logLevel`        | The optional parameter, `info` by default. Can be -	`debug`, `error`, `info` |
+| `rpcEndpoint`     | It is the optional field, you should provide this if you are getting block size limit exceeded error. This is usually happens when you are using any web social auth providers.|
+| `defaultGasPrice`  | The gas price (in wei) to be used for transactions.|
+| `defaultGasLimit`  | The gas limit to be set for transactions.|
+| `tokenName`  | The name of the token which will be used. It can assume the values `FET` and `AGIX`. |
+| `standType`  | This attribute for test networks can assume the values `demo`, `dev`, and for Mainnet, it can take on the values `prod` |
 
 **Debugging Tip:** To view debug logs, enable verbose mode in your browser's developer console.
 
@@ -113,10 +137,9 @@ The api to invoke gRPC methods against a service is similar to that of the `gRPC
 ```javascript
 
 import { <ServiceName> } from  '<path_to_grpc_service_file>'
-
 import { <Message> } from  '<path_to_grpc_message_file>'
 
-const  client = sdk.createServiceClient("<org_id>", "<service_id>")
+const  client = sdk.createServiceClient({orgId: "<org_id>", serviceId: "<service_id>"})
 
 ```
 
@@ -133,39 +156,43 @@ More details about can be found on the official [documentation](https://github.c
 
 ## WEBSDK SETUP LOCALLY
 
-If you want to setup WEB SDK locally please follow below steps
+To set up and link snet-sdk-web locally for development or testing, follow these steps:
 
-First clone this repo to your local machine.
+1. Clone and Build the SDK
+Clone the repository:
+```bash
+git clone https://github.com/singnet/snet-sdk-web.git
+```
 
-Then open repo and go to web folder inside SNET-SDK-JS > packages > web
+2. Install dependencies and build:
 
 ```bash
 npm install
-```
-
-If you are using **Windows** Then follow below steps first
-
-Copy **core** folder from **SNET-SDK-JS > packages > core** and paste or replace it inside **SNET-SDK-JS > packages > web > src**
-
-```bash
 npm run build
 ```
 
+3. Link the package globally (to use it in other projects):
 ```bash
 npm link
 ```
 
-Now go to the other project or repo where you want to connect SDK locally
-
+or use next string in your package.json file:
 ```bash
-npm link snet-sdk-web
+"snet-sdk-web": "file:<path to snet-sdk-web parent folder>/snet-sdk-web/dist"
 ```
+
+4. Start your project to test the changes:
 
 ```bash
 npm run start
 ```
 
-**(NOTE)** If you change anything inside web sdk and you want to access the updated code inside your repo you need to re run all the above commands.
+#### ⚠️ Important Note
+If you make changes to the `snet-sdk-web` code rebuild the package:
+
+```bash
+npm run build
+```
 
 ### Versioning
 
