@@ -1,12 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./App.css"
 import { getDefaultServiceClient, getFreeCallServiceClient, getPaymentServiceClient, getServiceMetadata } from "./helperFunctions/sdkCallFunctions";
 import { AppContext } from "./AppContext";
 
 // import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/HateSpeechDetection";
 // import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/Calculator";
-// import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/SemyonDev";
-import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/TossSER_FreeTrain";
+import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/SemyonDev";
+// import ServiceDemo, {serviceConfig} from "./components/ServiceDemos/TossSER_FreeTrain";
 
 
 import ServiceInfo from "./components/ServiceInfo";
