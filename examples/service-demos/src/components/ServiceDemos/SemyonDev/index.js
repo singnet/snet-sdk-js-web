@@ -25,6 +25,8 @@ const TextToText = ({ serviceClient, isComplete }) => {
       // создаём и заполняем запрос
       const request = new basicSttInput();
       request.setText(textInput);
+      console.log("request: ", request, request.toObject());
+      
 
       // props для unary
       const props = {
