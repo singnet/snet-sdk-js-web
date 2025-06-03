@@ -67,7 +67,7 @@ class WebServiceClient {
         const { serviceName } = methodDescriptor.service;
         const { methodName } = methodDescriptor;
         const customMetadata =
-            await this.metadataProvider._options.metadataGenerator(
+            await this._options.metadataGenerator(
                 this,
                 serviceName,
                 methodName
@@ -97,11 +97,11 @@ class WebServiceClient {
      * @param {UnaryMethodDefinition} methodDescriptor
      */
     async _enhanceMetadata(metadata = new grpc.Metadata(), methodDescriptor) {
-        if (this.metadataProvider._options.disableBlockchainOperations) {
+        if (this._options.disableBlockchainOperations) {
           return metadata;
         }
     
-        if (this.metadataProvider._options.metadataGenerator) {
+        if (this._options.metadataGenerator) {
           return await this._enhanceMetadataViaMetadataGenerator(metadata, methodDescriptor);
         }
     
