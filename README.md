@@ -112,6 +112,8 @@ You can find a sample config below
 
 ```
 
+#### Config
+
 All config fields:
 | **Key**            | **Description**                                                                           |
 |--------------------|-------------------------------------------------------------------------------------------|
@@ -128,19 +130,57 @@ All config fields:
 
 **Debugging Tip:** To view debug logs, enable verbose mode in your browser's developer console.
 
-Now, the instance of the sdk can be used to instantiate clients for SingularityNET services. To interact with those services, the sdk needs to be supplied with the compiled gRPC client libraries.
+#### Using the SDK with SingularityNET Services
 
-This SDK uses [gRPC-web](https://github.com/improbable-eng/grpc-web) by improbable engineering. To generate the gRPC client libraries, follow the instructions given by the `gRPC-web` package [here](https://github.com/improbable-eng/grpc-web/tree/master/client/grpc-web).
+Once instantiated, the SDK allows you to create clients for SingularityNET services. These clients require compiled gRPC client libraries to interact with the services.
 
-The api to invoke gRPC methods against a service is similar to that of the `gRPC-web` package used.
+This SDK uses [gRPC-web](https://github.com/improbable-eng/grpc-web) by Improbable Engineering. To generate the gRPC client libraries, follow the follow the official [gRPC-web code generation guide](https://github.com/improbable-eng/grpc-web/tree/master/client/grpc-web).
+
+The API for invoking gRPC methods mirrors the standard `gRPC-web` interface.
+
+#### Creating a Service Client
 
 ```javascript
 
 import { <ServiceName> } from  '<path_to_grpc_service_file>'
 import { <Message> } from  '<path_to_grpc_message_file>'
 
-const  client = sdk.createServiceClient({orgId: "<org_id>", serviceId: "<service_id>"})
+// Basic initialization
+const client = sdk.createServiceClient({
+  orgId: "<org_id>",
+  serviceId: "<service_id>"
+});
 
+```
+You can initialize the client in two ways:
+
+1. Direct Parameters
+Provide orgId and serviceId directly:
+
+```javascript
+sdk.createServiceClient({ orgId: "my-org", serviceId: "my-service" });
+```
+2. ServiceMetadataProvider
+For advanced control, use a pre-configured metadata provider:
+
+```javascript
+const serviceMetadataProvider = await sdk.createServiceMetadataProvider(
+  orgId,
+  serviceId,
+  groupName,  // optional
+  options     // optional (e.g., endpoint overrides)
+);
+const client = sdk.createServiceClient({ serviceMetadataProvider });
+```
+3. Payment Strategy (Optional)
+By default, the SDK uses a built-in payment strategy. To customize:
+
+```javascript
+const client = sdk.createServiceClient({
+  orgId: "my-org",
+  serviceId: "my-service",
+  paymentStrategy: myCustomStrategy  // Your IPaymentStrategy implementation
+});
 ```
 
 This generates a service client which can be used to make gRPC calls to the desired service.
