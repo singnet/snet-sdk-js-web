@@ -5,7 +5,7 @@ import Loader from "../Loader";
 import Table from "../Table";
 import Error from "../Error";
 import PopUp from "../PopUp";
-import { cogsToToken } from "snet-sdk-core/utils/tokenUtils";
+import { cogsToToken } from "snet-sdk-web/utils/tokenUtils";
 import { TOKEN_NAME } from "../../configs/sdkConfig";
 
 const WalletInfo = () => {

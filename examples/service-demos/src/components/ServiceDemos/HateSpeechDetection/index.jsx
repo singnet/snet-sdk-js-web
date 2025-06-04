@@ -4,7 +4,7 @@ import { MODEL, BLOCKS, LABELS } from "./metadata";
 import "../common/styles.css";
 import Error from "../../Error";
 import Loader from "../../Loader";
-import { wrapUnaryToPromise } from "snet-sdk-core/utils/protoHelper";
+import { wrapUnaryToPromise } from "snet-sdk-web/utils/protoHelper";
 import { AppContext } from "../../../AppContext";
 
 export {default as serviceConfig} from "./serviceConfig";

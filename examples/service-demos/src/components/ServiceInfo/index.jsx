@@ -6,7 +6,7 @@ import "./styles.css";
 import { getAvailableFreeCalls } from "../../helperFunctions/sdkCallFunctions.js";
 
 import Table from "../Table/index.jsx";
-import { cogsToToken } from "snet-sdk-core/utils/tokenUtils";
+import { cogsToToken } from "snet-sdk-web/utils";
 import { TOKEN_NAME } from "../../configs/sdkConfig.js";
 
 const ServiceInfo = ({serviceMetadata}) => {

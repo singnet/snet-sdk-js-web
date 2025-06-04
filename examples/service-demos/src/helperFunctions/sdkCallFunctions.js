@@ -1,7 +1,7 @@
 import { initSDK } from '../configs/sdkConfig';
 import {
     PrepaidPaymentStrategy,
-    FreeCallPaymentStrategy,
+    FreeCallPaymentStrategy
 } from 'snet-sdk-web/paymentStrategies';
 
 let sdk;
