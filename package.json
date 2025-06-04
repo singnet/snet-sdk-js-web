@@ -8,19 +8,21 @@
   ],
   "exports": {
     ".": "./dist/index.js",
-    "./constants/*": "./dist/constants/*.js",
-    "./constants": "./dist/constants/index.js",
+    "./constants/*": "./dist/constants/index.js",
+    "./constants/BlockchainConstants": "./dist/constants/index.js",
 
-    "./paymentStrategies": "./dist/paymentStrategies/inedx.js",
+    "./paymentStrategies": "./dist/paymentStrategies/index.js",
     "./paymentStrategies/DefaultPaymentStrategy": "./dist/paymentStrategies/DefaultPaymentStrategy.js",
     "./paymentStrategies/BasePaidPaymentStrategy": "./dist/paymentStrategies/BasePaidPaymentStrategy.js",
     "./paymentStrategies/FreeCallPaymentStrategy": "./dist/paymentStrategies/FreeCallPaymentStrategy.js",
     "./paymentStrategies/PaidCallPaymentStrategy": "./dist/paymentStrategies/PaidCallPaymentStrategy.js",
     "./paymentStrategies/PrepaidPaymentStrategy": "./dist/paymentStrategies/PrepaidPaymentStrategy.js",
 
-    "./training/TrainingProvider": "./dist/training/TrainingProvider.js",
-    "./training/TrainingConstants": "./dist/training/TrainingConstants.js",
-    "./utils/*": "./dist/utils/index.js",
+    "./training": "./dist/training/index.js",
+    "./training/TrainingProvider": "./dist/training/index.js",
+    "./training/TrainingConstants": "./dist/training/index.js",
+
+    "./utils": "./dist/utils/index.js",
     "./utils/logger": "./dist/utils/index.js",
     "./utils/tokenUtils": "./dist/utils/index.js"
   },
