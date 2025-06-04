@@ -1,6 +1,6 @@
 {
   "name": "snet-sdk-web",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "SingularityNET SDK for Web",
   "main": "./dist/index.js",
   "files": [
@@ -10,18 +10,15 @@
     ".": "./dist/index.js",
     "./constants/*": "./dist/constants/index.js",
     "./constants/BlockchainConstants": "./dist/constants/index.js",
-
     "./paymentStrategies": "./dist/paymentStrategies/index.js",
     "./paymentStrategies/DefaultPaymentStrategy": "./dist/paymentStrategies/DefaultPaymentStrategy.js",
     "./paymentStrategies/BasePaidPaymentStrategy": "./dist/paymentStrategies/BasePaidPaymentStrategy.js",
     "./paymentStrategies/FreeCallPaymentStrategy": "./dist/paymentStrategies/FreeCallPaymentStrategy.js",
     "./paymentStrategies/PaidCallPaymentStrategy": "./dist/paymentStrategies/PaidCallPaymentStrategy.js",
     "./paymentStrategies/PrepaidPaymentStrategy": "./dist/paymentStrategies/PrepaidPaymentStrategy.js",
-
     "./training": "./dist/training/index.js",
     "./training/TrainingProvider": "./dist/training/index.js",
     "./training/TrainingConstants": "./dist/training/index.js",
-
     "./utils": "./dist/utils/index.js",
     "./utils/logger": "./dist/utils/index.js",
     "./utils/tokenUtils": "./dist/utils/index.js"
