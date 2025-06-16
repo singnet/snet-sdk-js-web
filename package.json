@@ -51,7 +51,7 @@
     "lodash": "latest",
     "loglevel": "^1.9.2",
     "singularitynet-platform-contracts": "2.1.0",
-    "snet-sdk-core": "file:../snet-sdk-core",
+    "snet-sdk-core": "0.1.7",
     "web3": "^4.4.0"
   },
   "browser": {
