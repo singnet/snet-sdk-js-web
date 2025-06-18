@@ -91,7 +91,7 @@ class WalletRPCIdentity {
       });
       return accounts;
     } catch (err) {
-        throw new Error("request accounts err: ", err);
+        throw new Error(`request accounts err: ${err.message}`, err);
     }
   }
 
@@ -100,7 +100,7 @@ class WalletRPCIdentity {
       const address = await this.getAddress();
       return this._web3Provider.eth.personal.sign(sha3Message, address, '');
     } catch (error) {
-      throw new Error('signing data error: ', error);
+      throw new Error(`signing data error: ${error.message}`, error);
     }
   }
   async sendTransaction(transactionObject) {
@@ -120,7 +120,7 @@ class WalletRPCIdentity {
         });
       });
     } catch (error) {
-      throw new Error('sending transaction error: ', error);
+      throw new Error(`sending transaction error: ${error.message}`, error);
     }
   }
 
@@ -142,7 +142,7 @@ class WalletRPCIdentity {
         logMessage('error', 'WalletRPCIdentity', 'No accounts found');
       }
     } catch (error) {
-      throw new Error('gettind account error: ', error);
+      throw new Error(`gettind account error: ${error.message}`, error);
     }
   }
   addListenersForWeb3 = () => {
