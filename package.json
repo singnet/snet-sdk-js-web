@@ -8,6 +8,7 @@
   ],
   "exports": {
     ".": "./dist/index.js",
+    "./mpe": "./dist/mpe/index.js",
     "./constants/*": "./dist/constants/index.js",
     "./constants/BlockchainConstants": "./dist/constants/index.js",
     "./paymentStrategies": "./dist/paymentStrategies/index.js",
