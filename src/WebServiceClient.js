@@ -72,9 +72,11 @@ class WebServiceClient {
                 serviceName,
                 methodName
             );
-        forOwn(customMetadata, (value, key) => {
-            metadata.append(key, value);
-        });
+        customMetadata.forEach(paymentMeta => {
+            Object.entries(paymentMeta).forEach(([key, value]) => {
+                metadata.append(key, value);
+            });
+            });
         return metadata;
     }
     
