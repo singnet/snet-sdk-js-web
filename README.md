@@ -1,11 +1,10 @@
-# snet-sdk-web
-
+# snet-sdk-js
 ![npm](https://img.shields.io/npm/v/snet-sdk-web.svg)
 
 SingularityNET SDK for Browser (Web)
 
 ## Getting Started
-This package snet-sdk-web provides browser-compatible tools for interacting with the SNET SDK. It is built on top of the snet-sdk-core, extending its functionality to support web-specific environments.
+This package snet-sdk-js-web provides browser-compatible tools for interacting with the SNET SDK. It is built on top of the snet-sdk-core, extending its functionality to support web-specific environments.
 
 The SNET JS SDK consists of three packages:
 
@@ -196,12 +195,12 @@ More details about can be found on the official [documentation](https://github.c
 
 ## WEBSDK SETUP LOCALLY
 
-To set up and link snet-sdk-web locally for development or testing, follow these steps:
+To set up and link snet-sdk-js-web locally for development or testing, follow these steps:
 
 1. Clone and Build the SDK
 Clone the repository:
 ```bash
-git clone https://github.com/singnet/snet-sdk-web.git
+git clone https://github.com/singnet/snet-sdk-js-web.git
 ```
 
 2. Install dependencies and build:
@@ -218,7 +217,7 @@ npm link
 
 or use next string in your package.json file:
 ```bash
-"snet-sdk-web": "file:<path to snet-sdk-web parent folder>/snet-sdk-web/dist"
+"snet-sdk-web": "file:<path to snet-sdk-web parent folder>/snet-sdk-js-web/dist"
 ```
 
 4. Start your project to test the changes:
@@ -228,7 +227,7 @@ npm run start
 ```
 
 #### ⚠️ Important Note
-If you make changes to the `snet-sdk-web` code rebuild the package:
+If you make changes to the `snet-sdk-js-web` code rebuild the package:
 
 ```bash
 npm run build
@@ -237,9 +236,9 @@ npm run build
 ### Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the
-[tags on this repository](https://github.com/singnet/snet-sdk-js/tags).
+[tags on this repository](https://github.com/singnet/snet-sdk-js-web/tags).
 
 ## License
 
 This project is licensed under the MIT License - see the
-[LICENSE](https://github.com/singnet/snet-sdk-js/blob/master/LICENSE) file for details.
+[LICENSE](https://github.com/singnet/snet-sdk-js-web/blob/master/LICENSE) file for details.
