@@ -1,6 +1,6 @@
 {
   "name": "snet-sdk-web",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "SingularityNET SDK for Web",
   "main": "./dist/index.js",
   "files": [
@@ -53,7 +53,7 @@
     "loglevel": "1.9.2",
     "singularitynet-platform-contracts": "2.1.0",
     "snet-sdk-core": "0.1.8",
-    "web3": "4.4.0"
+    "web3": "4.16.0"
   },
   "browser": {
     "tls": false,
@@ -62,7 +62,9 @@
   },
   "peerDependencies": {
     "@improbable-eng/grpc-web": "0.15.0",
-    "google-protobuf": "3.21.4"
+    "google-protobuf": "3.21.4",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10"
   },
   "devDependencies": {
     "@babel/cli": "7.23.9",
