@@ -52,6 +52,6 @@
     "@babel/register": "^7.23.7",
     "@improbable-eng/grpc-web": "^0.15.0",
     "google-protobuf": "^3.21.2",
-    "rimraf": "^5.0.5"
+    "rimraf": "^6.1.3"
   }
 }
